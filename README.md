@@ -15,4 +15,11 @@
 
 ## Thoughts
 
+### General
+
 1. fitValid seemed to have a **HUGE** effect to remove background.
+
+### Randomization
+
+1. does it make more sence to output "useful" events to a new ntuple events?
+> basically have another new ntuple to write event that passes triggerWord, dataCleaning and fitValid?
