@@ -4,7 +4,7 @@ RATROOT := $(shell echo $(RATROOT))
 RAT_LIBRARY_PATH := $(RATROOT)/lib
 RAT_INCLUDE_PATH := $(RATROOT)/include
 RAT_LIBRARY := RATEvent_Linux
-PROGRAM := read.cc
+PROGRAM := ./src/read.cc
 OUTPUT_FILE := read 
 
 standard: $(PROGRAM)
