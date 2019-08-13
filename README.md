@@ -12,3 +12,7 @@
 >
 4. Gaussian prior distribution
 >
+
+## Thoughts
+
+1. fitValid seemed to have a **HUGE** effect to remove background.
