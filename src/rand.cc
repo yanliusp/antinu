@@ -14,11 +14,12 @@ void rand_assign(string skimfile, string treename, const int step, const vector<
   chain->Add(skimfile.c_str());
 
   int nhits;
-  double energy;
+  double energy, udotr;
   ULong64_t tickdiff50, cur;
   chain->SetBranchAddress("nhits", &nhits);
   chain->SetBranchAddress("tickdiff50", &tickdiff50);
   chain->SetBranchAddress("energy", &energy);
+  chain->SetBranchAddress("udotr", &udotr);
 
   for(int iEv=0; iEv<chain->GetEntries()-step; iEv++) {
       chain->GetEvent(iEv);
@@ -26,7 +27,8 @@ void rand_assign(string skimfile, string treename, const int step, const vector<
       chain->GetEvent(iEv+step);
       cout << cur << "  " << tickdiff50 << endl;
 
-      if (energy>cuts[0]) cout << "yes" << endl;
+      //applying cuts
+      if (energy>cuts[0] && udotr>cuts[1]) cout << "yes" << endl;
     }
 
   return;
