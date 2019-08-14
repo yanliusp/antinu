@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void rand(string skimfile, string treename);
+void rand(string skimfile, string treename, const int option);
 
 #endif
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void rand(string skimfile, string treename) {
+void rand(string skimfile, string treename, const int option) {
 
   TChain *chain = new TChain(treename.c_str()); 
   chain->Add(skimfile.c_str());
@@ -17,8 +17,11 @@ void rand(string skimfile, string treename) {
   ULong64_t clockCount50, curtick50, tickdiff50;
   chain->SetBranchAddress("nhits", &nhits);
   chain->SetBranchAddress("clockCount50", &clockCount50);
+  chain->SetBranchAddress("tickdiff50", &tickdiff50);
 
 
+  if (option == 1) {
+    cout << "using 'move to the next' method to randomize" << endl;}
   //first event
   chain->GetEvent(0);
   curtick50 = clockCount50;
@@ -26,10 +29,9 @@ void rand(string skimfile, string treename) {
   for(int iEv=1; iEv<chain->GetEntries(); iEv++) {
       chain->GetEvent(iEv);
 
-      tickdiff50 = clockCount50-curtick50;
+      cout << clockCount50-curtick50 << "     " << tickdiff50 << endl;
       curtick50 = clockCount50;
 
-      cout << tickdiff50 << endl;
       //DO NOT REMOVE
       //monitor clock jump
       if (tickdiff50>9999999999999 or tickdiff50<0) throw std::invalid_argument

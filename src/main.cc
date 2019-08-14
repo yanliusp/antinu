@@ -6,6 +6,6 @@ int main () {
   //skim();
 
   //randomization
-  rand("./skim_files/skim.root","skimdata");
+  rand("./skim_files/skim.root","skimdata", 1);
   return 0;
 }
