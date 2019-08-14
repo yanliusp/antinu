@@ -1,5 +1,7 @@
 #include <iostream>
 #include <stdexcept>
+#include <vector>
+#include <numeric>
 
 #include <TChain.h>
 #include <TNtuple.h>
@@ -14,21 +16,31 @@ TTree * skim() {
   chain->Add("./ntuple_files/Analysis*.ntuple.root");
 
   bool fitValid;
-  int nhits, triggerWord;
+  int triggerWord;
+  double posx, posy, posz, posr, dirx, diry, dirz, udotr;
   ULong64_t clockCount50, curtick50, tickdiff50;
   ULong64_t dcFlagged, dcApplied, dcClean = 0xFB0000017FFE;
-  chain->SetBranchAddress("nhits", &nhits);
   chain->SetBranchAddress("clockCount50", &clockCount50);
+
   chain->SetBranchAddress("fitValid", &fitValid);
   chain->SetBranchAddress("dcFlagged", &dcFlagged);
   chain->SetBranchAddress("dcApplied", &dcApplied);
   chain->SetBranchAddress("triggerWord", &triggerWord);
+
+  chain->SetBranchAddress("posx", &posx);
+  chain->SetBranchAddress("posy", &posy);
+  chain->SetBranchAddress("posz", &posz);
+  chain->SetBranchAddress("posr", &posr);
+  chain->SetBranchAddress("dirx", &dirx);
+  chain->SetBranchAddress("diry", &diry);
+  chain->SetBranchAddress("dirz", &dirz);
 
   //declare ROOT objects
   TFile *writeFile = new TFile("./skim_files/skim.root","RECREATE");
   chain->LoadTree(0);
   TTree *skim = chain->GetTree()->CloneTree(0);
   skim->Branch("tickdiff50",&tickdiff50,"tickdiff50/l");
+  skim->Branch("udotr",&udotr,"udotr/D");
 
   //first event
   chain->GetEvent(0);
@@ -41,8 +53,14 @@ TTree * skim() {
       if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
       if (!fitValid) continue;
 
+      //calculate tickdiff50
       tickdiff50 = clockCount50-curtick50;
       curtick50 = clockCount50;
+
+      //calculate u.r
+      vector<double> posv {posx,posy,posz};
+      vector<double> dirv {dirx,diry,dirz};
+      udotr = inner_product(posv.begin(), posv.end(), dirv.begin(), 0)/posr;
 
       skim->Fill();
 
