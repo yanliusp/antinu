@@ -22,6 +22,7 @@
 ### Randomization
 
 #### Obsoleted
-1. does it make more sence to skim to a new TTree?
+1. 2019.Aug.14:
+   does it make more sence to skim to a new TTree?
 	* basically have another new ntuple to write event that passes triggerWord, dataCleaning and fitValid?
 	* also added a branch that contains the time differences. 

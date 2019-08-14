@@ -25,7 +25,7 @@ TTree * skim() {
   chain->SetBranchAddress("triggerWord", &triggerWord);
 
   //declare ROOT objects
-  TFile *writeFile = new TFile("skim.root","RECREATE");
+  TFile *writeFile = new TFile("./skim_files/skim.root","RECREATE");
   chain->LoadTree(0);
   TTree *skim = chain->GetTree()->CloneTree(0);
   skim->Branch("tickdiff50",&tickdiff50,"tickdiff50/l");
