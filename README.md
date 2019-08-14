@@ -19,6 +19,13 @@
 
 1. fitValid seemed to have a **HUGE** effect to remove background.
 
+### Code logic
+
+1. skim() will read in ntuples(data) and write useful events into a skimfile, stored under skim\_files.
+	* useful events means events that passed triggerWord, dataCleaning and fitValid.
+
+	* currently only one skimfile will be written -> when data gets big, it would make since to split iit to subfiles.
+
 ### Randomization
 
 #### Obsoleted
