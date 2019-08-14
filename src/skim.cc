@@ -15,7 +15,7 @@ TTree * skim() {
 
   bool fitValid;
   int nhits, triggerWord;
-  ULong64_t clockCount50, curtick, tickdiff;
+  ULong64_t clockCount50, curtick50, tickdiff50;
   ULong64_t dcFlagged, dcApplied, dcClean = 0xFB0000017FFE;
   chain->SetBranchAddress("nhits", &nhits);
   chain->SetBranchAddress("clockCount50", &clockCount50);
@@ -28,11 +28,11 @@ TTree * skim() {
   TFile *writeFile = new TFile("skim.root","RECREATE");
   chain->LoadTree(0);
   TTree *skim = chain->GetTree()->CloneTree(0);
-  skim->Branch("tickdiff",&tickdiff,"tickdiff/l");
+  skim->Branch("tickdiff50",&tickdiff50,"tickdiff50/l");
 
   //first event
   chain->GetEvent(0);
-  curtick = clockCount50;
+  curtick50 = clockCount50;
 
   for(int iEv=1; iEv<chain->GetEntries(); iEv++) {
       chain->GetEvent(iEv);
@@ -41,15 +41,15 @@ TTree * skim() {
       if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
       if (!fitValid) continue;
 
-      tickdiff = clockCount50-curtick;
-      curtick = clockCount50;
+      tickdiff50 = clockCount50-curtick50;
+      curtick50 = clockCount50;
 
       skim->Fill();
 
       //DO NOT REMOVE
       //monitor clock jump
-      if (tickdiff>9999999999999 or tickdiff<0) throw std::invalid_argument
-                                               ("abnormal tickdiff value");
+      if (tickdiff50>9999999999999 or tickdiff50<0) throw std::invalid_argument
+                                               ("abnormal tickdiff50 value");
     }
 
   writeFile->cd();
