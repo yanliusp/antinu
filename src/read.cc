@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int main() {
+TTree * skim() {
 
   TChain *chain = new TChain("output"); 
   chain->Add("./ntuple_files/Analysis*.ntuple.root");
@@ -24,10 +24,9 @@ int main() {
 
   //declare ROOT objects
   TH1D *hTime = new TH1D("hTime","Time difference", 2000,0.,2000);
-  TFile *writeFile = new TFile("write.root","RECREATE");
+  TFile *writeFile = new TFile("skim.root","RECREATE");
   chain->LoadTree(0);
   TTree *skim = chain->GetTree()->CloneTree(0);
-
 
   //first event
   chain->GetEvent(0);
@@ -48,16 +47,17 @@ int main() {
       curtick = clockCount50;
       //DO NOT REMOVE
       //monitor clock jump
-      if (tickdiff>9999999999999 or tickdiff<0) return 2;
+      //if (tickdiff>9999999999999 or tickdiff<0) return 2;
 
       hTime->Fill(tickdiff*20./1000.);
     }
 
   writeFile->cd();
   skim->Write("skimdata");
+  return skim;
+}
+
+int main () {
+  skim();
   return 0;
-
-
-
-
 }
