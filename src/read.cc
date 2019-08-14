@@ -13,6 +13,7 @@ int main() {
 
   //declare ROOT objects
   TH1D *hTime = new TH1D("hTime","Time difference", 2000,0.,2000);
+  TNtuple *data = new TNtuple("data","skim file", "nhits:clockCount50");
 
   bool fitValid;
   int nhits, triggerWord;
@@ -25,9 +26,6 @@ int main() {
   chain->SetBranchAddress("dcApplied", &dcApplied);
   chain->SetBranchAddress("triggerWord", &triggerWord);
 
-  TTree *oldchain = (TChain*)chain->Clone();
-  TTree *newtree = oldchain->CloneTree(0);
-
   //first event
   chain->GetEvent(0);
   curtick = clockCount50;
@@ -35,14 +33,14 @@ int main() {
   for(int iEv=1; iEv<chain->GetEntries(); iEv++)
   //for(int iEv=1; iEv<9990000; iEv++)
     {
-      oldchain->GetEvent(iEv);
+      chain->GetEvent(iEv);
       //triggerWord, data-cleaning, fitValid
       if (!(((triggerWord & 0x401400) == 0x0) && (triggerWord != 0x40))) continue;
       if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
       if (!fitValid) continue;
 
-      
-      newtree->Fill();
+      data->Fill(nhits,clockCount50);      
+
 
       tickdiff = clockCount50-curtick;
       curtick = clockCount50;
@@ -55,8 +53,7 @@ int main() {
 
   TFile *writeFile = new TFile("write.root","RECREATE");
   writeFile->cd();
-  hTime->Write();
-  newtree->Write();
+  data->Write();
   return 0;
 
 
