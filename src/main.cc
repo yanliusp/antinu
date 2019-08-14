@@ -7,6 +7,7 @@ int main () {
 
   //randomization
   //Method: "Moving to the next"
-  rand_assign("./skim_files/skim.root","skimdata", 1);
+  const vector<double> cuts={2.5,0.0};
+  rand_assign("./skim_files/skim.root","skimdata", 1,cuts);
   return 0;
 }
