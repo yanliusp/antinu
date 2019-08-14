@@ -1,5 +1,6 @@
 #include<iostream>
 #include <TChain.h>
+#include <TNtuple.h>
 #include <TH1.h>
 #include <TFile.h>
 
@@ -7,39 +8,44 @@ using namespace std;
 
 int main() {
 
-  TChain chain("output"); 
-  chain.Add("./ntuple_files/Analysis*.ntuple.root");
+  TChain *chain = new TChain("output"); 
+  chain->Add("./ntuple_files/Analysis*.ntuple.root");
 
+  //declare ROOT objects
   TH1D *hTime = new TH1D("hTime","Time difference", 2000,0.,2000);
 
   bool fitValid;
   int nhits, triggerWord;
   ULong64_t clockCount50, curtick, tickdiff;
   ULong64_t dcFlagged, dcApplied, dcClean = 0xFB0000017FFE;
-  chain.SetBranchAddress("nhits", &nhits);
-  chain.SetBranchAddress("clockCount50", &clockCount50);
-  chain.SetBranchAddress("fitValid", &fitValid);
-  chain.SetBranchAddress("dcFlagged", &dcFlagged);
-  chain.SetBranchAddress("dcApplied", &dcApplied);
-  chain.SetBranchAddress("triggerWord", &triggerWord);
+  chain->SetBranchAddress("nhits", &nhits);
+  chain->SetBranchAddress("clockCount50", &clockCount50);
+  chain->SetBranchAddress("fitValid", &fitValid);
+  chain->SetBranchAddress("dcFlagged", &dcFlagged);
+  chain->SetBranchAddress("dcApplied", &dcApplied);
+  chain->SetBranchAddress("triggerWord", &triggerWord);
+
+  TTree *oldchain = (TChain*)chain->Clone();
+  TTree *newtree = oldchain->CloneTree(0);
 
   //first event
-  chain.GetEvent(0);
+  chain->GetEvent(0);
   curtick = clockCount50;
 
-  for(int iEv=1; iEv<chain.GetEntries(); iEv++)
+  for(int iEv=1; iEv<chain->GetEntries(); iEv++)
   //for(int iEv=1; iEv<9990000; iEv++)
     {
-      chain.GetEvent(iEv);
-
+      oldchain->GetEvent(iEv);
       //triggerWord, data-cleaning, fitValid
       if (!(((triggerWord & 0x401400) == 0x0) && (triggerWord != 0x40))) continue;
       if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
       if (!fitValid) continue;
 
+      
+      newtree->Fill();
+
       tickdiff = clockCount50-curtick;
       curtick = clockCount50;
-
       //DO NOT REMOVE
       //monitor clock jump
       if (tickdiff>9999999999999 or tickdiff<0) return 2;
@@ -50,6 +56,7 @@ int main() {
   TFile *writeFile = new TFile("write.root","RECREATE");
   writeFile->cd();
   hTime->Write();
+  newtree->Write();
   return 0;
 
 
