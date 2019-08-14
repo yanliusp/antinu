@@ -1,4 +1,5 @@
 #include "skim.hh"
+#include "scan.hh"
 #include "rand.hh"
 
 #include <sys/stat.h>

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void skim() {
+TTree * scan() {
 
   TChain *chain = new TChain("output"); 
   chain->Add("./ntuple_files/Analysis*.ntuple.root");
@@ -81,5 +81,5 @@ void skim() {
 
   writeFile->cd();
   skim->Write("skimdata");
-  return;
+  return skim;
 }
