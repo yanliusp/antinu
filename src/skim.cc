@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 #include <TChain.h>
 #include <TNtuple.h>
 #include <TH1.h>
@@ -55,9 +55,4 @@ TTree * skim() {
   writeFile->cd();
   skim->Write("skimdata");
   return skim;
-}
-
-int main () {
-  skim();
-  return 0;
 }
