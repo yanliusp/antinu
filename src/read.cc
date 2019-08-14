@@ -11,10 +11,6 @@ int main() {
   TChain *chain = new TChain("output"); 
   chain->Add("./ntuple_files/Analysis*.ntuple.root");
 
-  //declare ROOT objects
-  TH1D *hTime = new TH1D("hTime","Time difference", 2000,0.,2000);
-  TNtuple *data = new TNtuple("data","skim file", "nhits:clockCount50");
-
   bool fitValid;
   int nhits, triggerWord;
   ULong64_t clockCount50, curtick, tickdiff;
@@ -25,6 +21,13 @@ int main() {
   chain->SetBranchAddress("dcFlagged", &dcFlagged);
   chain->SetBranchAddress("dcApplied", &dcApplied);
   chain->SetBranchAddress("triggerWord", &triggerWord);
+
+  //declare ROOT objects
+  TH1D *hTime = new TH1D("hTime","Time difference", 2000,0.,2000);
+  TFile *writeFile = new TFile("write.root","RECREATE");
+  chain->LoadTree(0);
+  TTree *skim = chain->GetTree()->CloneTree(0);
+
 
   //first event
   chain->GetEvent(0);
@@ -39,8 +42,7 @@ int main() {
       if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
       if (!fitValid) continue;
 
-      data->Fill(nhits,clockCount50);      
-
+      skim->Fill();
 
       tickdiff = clockCount50-curtick;
       curtick = clockCount50;
@@ -51,9 +53,8 @@ int main() {
       hTime->Fill(tickdiff*20./1000.);
     }
 
-  TFile *writeFile = new TFile("write.root","RECREATE");
   writeFile->cd();
-  data->Write();
+  skim->Write("skimdata");
   return 0;
 
 
