@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <vector>
 #include <numeric>
+#include <cmath>
 
 #include <TChain.h>
 #include <TNtuple.h>
@@ -17,7 +18,8 @@ TTree * skim() {
 
   bool fitValid;
   int triggerWord;
-  double posx, posy, posz, posr, dirx, diry, dirz, udotr;
+  double posx, posy, posz, posr, dirx, diry, dirz, udotr, posdiff;
+  vector<double> curposv; 
   ULong64_t clockCount50, curtick50, tickdiff50;
   ULong64_t dcFlagged, dcApplied, dcClean = 0xFB0000017FFE;
   chain->SetBranchAddress("clockCount50", &clockCount50);
@@ -40,11 +42,13 @@ TTree * skim() {
   chain->LoadTree(0);
   TTree *skim = chain->GetTree()->CloneTree(0);
   skim->Branch("tickdiff50",&tickdiff50,"tickdiff50/l");
+  skim->Branch("posdiff",&posdiff,"posdiff/D");
   skim->Branch("udotr",&udotr,"udotr/D");
 
   //first event
   chain->GetEvent(0);
   curtick50 = clockCount50;
+  curposv = {posx,posy,posz};
 
   for(int iEv=1; iEv<chain->GetEntries(); iEv++) {
       chain->GetEvent(iEv);
@@ -61,6 +65,11 @@ TTree * skim() {
       vector<double> posv {posx,posy,posz};
       vector<double> dirv {dirx,diry,dirz};
       udotr = inner_product(posv.begin(), posv.end(), dirv.begin(), 0)/posr;
+
+      posdiff = 0;
+      for (int i=0;i<3;i++) posdiff = posdiff + pow (posv[i]-curposv[i], 2.0);
+      posdiff = sqrt(posdiff);
+      curposv = posv;
 
       skim->Fill();
 
