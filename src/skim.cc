@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdexcept>
+
 #include <TChain.h>
 #include <TNtuple.h>
 #include <TH1.h>
@@ -23,33 +25,31 @@ TTree * skim() {
   chain->SetBranchAddress("triggerWord", &triggerWord);
 
   //declare ROOT objects
-  TH1D *hTime = new TH1D("hTime","Time difference", 2000,0.,2000);
   TFile *writeFile = new TFile("skim.root","RECREATE");
   chain->LoadTree(0);
   TTree *skim = chain->GetTree()->CloneTree(0);
+  skim->Branch("tickdiff",&tickdiff,"tickdiff/l");
 
   //first event
   chain->GetEvent(0);
   curtick = clockCount50;
 
-  for(int iEv=1; iEv<chain->GetEntries(); iEv++)
-  //for(int iEv=1; iEv<9990000; iEv++)
-    {
+  for(int iEv=1; iEv<chain->GetEntries(); iEv++) {
       chain->GetEvent(iEv);
       //triggerWord, data-cleaning, fitValid
       if (!(((triggerWord & 0x401400) == 0x0) && (triggerWord != 0x40))) continue;
       if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
       if (!fitValid) continue;
 
-      skim->Fill();
-
       tickdiff = clockCount50-curtick;
       curtick = clockCount50;
+
+      skim->Fill();
+
       //DO NOT REMOVE
       //monitor clock jump
-      //if (tickdiff>9999999999999 or tickdiff<0) return 2;
-
-      hTime->Fill(tickdiff*20./1000.);
+      if (tickdiff>9999999999999 or tickdiff<0) throw std::invalid_argument
+                                               ("abnormal tickdiff value");
     }
 
   writeFile->cd();
