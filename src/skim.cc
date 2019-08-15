@@ -63,7 +63,9 @@ void skim(const string &ntuplepath, int filesize) {
        
         filename = "./skim_files/skim_s" + to_string(counter/filesize) + ".root";
         writeFile = new TFile(filename.c_str(), "RECREATE");
+        chain->LoadTree(0);
         skim = chain->GetTree()->CloneTree(0);
+        skim->Branch("udotr",&udotr,"udotr/D");
       }
       skim->Fill();
       counter++;
