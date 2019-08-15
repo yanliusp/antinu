@@ -10,26 +10,29 @@ using namespace std;
 
 void rand_assign(string scanfile, string treename, const int step, const vector<double> &prompt_cuts) {
 
-  TChain *chain = new TChain(treename.c_str()); 
-  chain->Add(scanfile.c_str());
+  TFile file(scanfile.c_str(), "UPDATE"); 
+  TTree *scan = (TTree *)file.Get(treename.c_str());
 
-  int nhits;
-  double energy, udotr;
-  ULong64_t tickdiff50, cur;
-  chain->SetBranchAddress("nhits", &nhits);
-  chain->SetBranchAddress("tickdiff50", &tickdiff50);
-  chain->SetBranchAddress("energy", &energy);
-  chain->SetBranchAddress("udotr", &udotr);
+  float prompt;
+  //int nhits;
+  double energy;
+  //scan->SetBranchAddress("nhits", &nhits);
+  scan->SetBranchAddress("energy", &energy);
 
-  for(int iEv=0; iEv<chain->GetEntries()-step; iEv++) {
-      chain->GetEvent(iEv);
-      cur = tickdiff50;
-      chain->GetEvent(iEv+step);
-      cout << cur << "  " << tickdiff50 << endl;
+  TBranch *promptBr = scan->Branch("prompt", &prompt, "prompt/F");
+
+  cout << scan->GetEntries() << endl;
+  for(int iEv=0; iEv<scan->GetEntries(); iEv++) {
+      scan->GetEvent(iEv);
 
       //applying cuts
-      if (energy>prompt_cuts[0]) cout << "yes" << endl;
+      prompt = 1.;
+      if (energy>prompt_cuts[0]) prompt = true;
+      promptBr->Fill();
     }
+
+  scan->Write("", TObject::kOverwrite);
+  file.Close();
 
   return;
 }
