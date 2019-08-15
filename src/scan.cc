@@ -18,10 +18,10 @@
 
 using namespace std;
 
-TTree * scan(const vector<double> &global_cuts) {
+void scan(const vector<double> &global_cuts) {
 
   TChain *chain = new TChain("skimdata"); 
-  chain->Add("./skim_files/skim_s0.root");
+  chain->Add("./skim_files/skim_s*.root");
 
   double posx, posy, posz, posr, udotr, posdiff;
   vector<double> curposv, posv; 
@@ -76,5 +76,6 @@ TTree * scan(const vector<double> &global_cuts) {
   writeFile->cd();
   scan->Write("scandata");
   cout << "write to ./scan_files/scan.root" << endl;
-  return scan;
+  writeFile->Close();
+  return;
 }

@@ -10,7 +10,7 @@
 
 using namespace std;
 
-TTree * scan(const vector<double> &global_cuts);
+void scan(const vector<double> &global_cuts);
 
 #endif
 
