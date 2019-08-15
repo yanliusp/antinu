@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void rand_assign(string skimfile, string treename, const int step, const vector<double> &cuts);
+void rand_assign(string scanfile, string treename, const int step, const vector<double> &prompt_cuts);
 
 
 #endif

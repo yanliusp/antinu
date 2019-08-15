@@ -8,10 +8,10 @@
 
 using namespace std;
 
-void rand_assign(string skimfile, string treename, const int step, const vector<double> &cuts) {
+void rand_assign(string scanfile, string treename, const int step, const vector<double> &prompt_cuts) {
 
   TChain *chain = new TChain(treename.c_str()); 
-  chain->Add(skimfile.c_str());
+  chain->Add(scanfile.c_str());
 
   int nhits;
   double energy, udotr;
@@ -28,7 +28,7 @@ void rand_assign(string skimfile, string treename, const int step, const vector<
       cout << cur << "  " << tickdiff50 << endl;
 
       //applying cuts
-      if (energy>cuts[0] && udotr>cuts[1]) cout << "yes" << endl;
+      if (energy>prompt_cuts[0]) cout << "yes" << endl;
     }
 
   return;
