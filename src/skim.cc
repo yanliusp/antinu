@@ -58,6 +58,7 @@ void skim(const string &ntuplepath, int filesize) {
       if (counter%filesize == 0) {
         writeFile->cd();
         skim->Write("skimdata");
+        writeFile->Close();
         cout << "write to " << filename << endl;
        
         filename = "./skim_files/skim_s" + to_string(counter/filesize) + ".root";
@@ -71,6 +72,7 @@ void skim(const string &ntuplepath, int filesize) {
 
   writeFile->cd();
   skim->Write("skimdata");
+  writeFile->Close();
   cout << "write to " << filename << endl;
 
   return;
