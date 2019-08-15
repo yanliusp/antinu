@@ -2,17 +2,18 @@
 #include <vector>
 #include <numeric>
 #include <cmath>
+#include <string>
 
 #include <TChain.h>
 #include <TFile.h>
 
 using namespace std;
 
-void skim(int filesize) {
+void skim(const string &ntuplepath, int filesize) {
 
   //read ntuple files (data)
   TChain *chain = new TChain("output"); 
-  chain->Add("./ntuple_files/Analysis*.ntuple.root");
+  chain->Add(ntuplepath.c_str());
 
   bool fitValid;
   int triggerWord;

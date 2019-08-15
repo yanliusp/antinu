@@ -13,14 +13,15 @@ inline bool exists (const string& name) {
 
 int main () {
 
+  const string SKIMDIR = "./skim_files/skim_s0.root";
+  const string ntuplepath = "/data/snoplus/processed_data/timebin_4/*ntuple.root";
   //number of entries per skim file
   int filesize = 1000000;
   const vector<double> global_cuts = {5300., 0.0};
   const vector<double> prompt_cuts={2.5};
 
   //make skim files from ntuples(data)
-  const string SKIMDIR = "./skim_files/skim_s0.root";
-  if (!exists(SKIMDIR)) skim(filesize);
+  if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
 
   //apply global cuts
   scan(global_cuts);
