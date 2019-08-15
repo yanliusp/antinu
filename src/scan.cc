@@ -21,7 +21,7 @@ using namespace std;
 TTree * scan(const vector<double> &global_cuts) {
 
   TChain *chain = new TChain("skimdata"); 
-  chain->Add("./skim_files/skim_s*.root");
+  chain->Add("./skim_files/skim_s0.root");
 
   double posx, posy, posz, posr, udotr, posdiff;
   vector<double> curposv, posv; 
@@ -69,8 +69,8 @@ TTree * scan(const vector<double> &global_cuts) {
 
       //DO NOT REMOVE
       //monitor clock jump
-      if (tickdiff50>9999999999999 or tickdiff50<0) throw std::invalid_argument
-                                               ("abnormal tickdiff50 value");
+      //if (tickdiff50>9999999999999) throw std::invalid_argument
+      //                                         ("abnormal tickdiff50 value");
     }
 
   writeFile->cd();
