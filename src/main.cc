@@ -15,10 +15,15 @@ int main () {
 
   //number of entries per skim file
   int filesize = 1000000;
+  vector<double> global_cuts = {5300., 0.0};
 
   //make skim files from ntuples(data)
-  const string SKIMDIR = "./skim_files/skim_*.root";
+  const string SKIMDIR = "./skim_files/skim_s0.root";
   if (!exists(SKIMDIR)) skim(filesize);
+
+  //apply global cuts
+  scan(global_cuts);
+
 
   //randomization && applying cuts
   //Method: "Moving to the next"
