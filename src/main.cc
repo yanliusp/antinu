@@ -15,7 +15,7 @@ int main () {
 
   //number of entries per skim file
   int filesize = 1000000;
-  vector<double> global_cuts = {5300., 0.0};
+  const vector<double> global_cuts = {5300., 0.0};
   const vector<double> prompt_cuts={2.5};
 
   //make skim files from ntuples(data)

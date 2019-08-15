@@ -18,7 +18,7 @@
 
 using namespace std;
 
-TTree * scan(vector<double> &global_cuts) {
+TTree * scan(const vector<double> &global_cuts) {
 
   TChain *chain = new TChain("skimdata"); 
   chain->Add("./skim_files/skim_s*.root");
