@@ -1,6 +1,6 @@
 #include "skim.hh"
 #include "scan.hh"
-#include "rand.hh"
+#include "prompt.hh"
 
 #include <sys/stat.h>
 
@@ -14,20 +14,21 @@ inline bool exists (const string& name) {
 int main () {
 
   const string SKIMDIR = "./skim_files/skim_s0.root";
+  const string SCANDIR = "./scan_files/scan.root";
   const string ntuplepath = "/data/snoplus/processed_data/timebin_4/*ntuple.root";
   //number of entries per skim file
   int filesize = 1000000;
-  const vector<double> global_cuts = {5300., 0.0};
-  const vector<double> prompt_cuts={2.5};
+  const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
+  const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
 
   //make skim files from ntuples(data)
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
 
   //apply global cuts
-  scan(global_cuts);
+  if (!exists(SCANDIR)) scan(global_cuts);
 
   //randomization && applying cuts
   //Method: "Moving to the next"
-  rand_assign("./scan_files/scan.root","scandata", 1, prompt_cuts);
+  prompt_select("./scan_files/scan.root","scandata", prompt_cuts);
   return 0;
 }
