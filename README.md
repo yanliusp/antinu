@@ -65,6 +65,11 @@ I think the same reasoning can apply to indivisual cuts as well. but I might nee
 
 	* it's possible to write to a root file with a single branch that contains number of events that pass the cuts -> useful to draw the bg distribution. NOTE: One branch for a set of cuts. the root file could be contains multiple branches.
 
+6. write() calls randomize() function to run the set of coincidence cuts over multiple random datasets.
+
+	* two inputs: random\_step, and coincidence cuts
+	* output: a root file that contains the number of events passed all cuts (see: ./plots/example\_2019.Aug.16.pdf)
+
 ### Randomization
 
 
