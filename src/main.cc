@@ -28,9 +28,12 @@ int main () {
   //apply global cuts
   if (!exists(SCANDIR)) scan(global_cuts);
 
+  //apply individual cuts
+  event_select("./scan_files/scan.root","scandata", "prompt", prompt_cuts);
+  event_select("./scan_files/scan.root","scandata", "delayed", delayed_cuts);
+
   //randomization && applying cuts
   //Method: "Moving to the next"
-  prompt_select("./scan_files/scan.root","scandata", prompt_cuts);
-  delayed_select("./scan_files/scan.root","scandata", delayed_cuts);
+
   return 0;
 }

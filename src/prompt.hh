@@ -10,9 +10,7 @@
 
 using namespace std;
 
-void prompt_select(string scanfile, string treename, const vector<double> &prompt_cuts);
-
-void delayed_select(string scanfile, string treename, const vector<double> &delayed_cuts);
+void event_select(string scanfile, string treename, string eventype, const vector<double> &individual_cuts);
 
 #endif
 
