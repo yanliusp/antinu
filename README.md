@@ -15,6 +15,12 @@
 
 ## Thoughts
 
+2019.Aug.16: OVERVIEW OF RESULTS AND COMPARISON
+
+need to think about how the organization looks like to compare results (results mean confidence levels here). Save everything into a root file? Would that be too dangerous (of overwrite)? Maybe not if I do it the right way.
+
+--------------------------------------------------
+
 2019.Aug.16: EVENT SELECTION CRITERIA
 
 need to think about what are the possible criteria can will be applied:
@@ -29,7 +35,7 @@ need to think about what are the possible criteria can will be applied:
 
 What else?
 
-###obsoleted
+### Obsoleted
 
 2019.Aug.16: RANDOMIZATION
 
@@ -39,15 +45,15 @@ However, the more cuts we applied, the long time interval between background eve
 
 I think the same reasoning can apply to indivisual cuts as well. but I might need to think about it more.
 
-------------------------------------------
+--------------------------------------------------
 
 3c6e72c: This commit should mark the finish of construction of basic event selection framework. It is possible to merge all the functions (skim, scan, individual and coincidence) into one .cc/hh file, since it looks like it's going to be a streamline process.
 
 More importantly, should start thinking about randomization now.
 
-### General
+## General
 
-### Code logic
+## Code logic
 
 1. skim() will read in ntuples(data) and write to skimfiles (skim\_s%.root), storing under skim\_files.
 
@@ -87,11 +93,6 @@ More importantly, should start thinking about randomization now.
 
 	* two inputs: random\_step, and coincidence cuts
 	* output: a root file that contains the number of events passed all cuts (see: ./plots/example\_2019.Aug.16.pdf)
-
-### Randomization
-
-
-
 
 ### Obsoleted
 1. 2019.Aug.14:
