@@ -13,9 +13,8 @@ void randomize(string coincidencefile, string treename, int step, const vector<d
   TTree *candidate = (TTree *)file.Get(treename.c_str());
 
   int delayedrunID, delayedeventID, promptrunID, prompteventID;
-  double posdiff_4;
-  vector<double> promptposv, posv;
-  ULong64_t tickdiff50_4;
+  double posdiff_4, PH_posdiff_4;
+  ULong64_t tickdiff50_4;//, PH_tickdiff50_4;
 
   candidate->SetBranchAddress("promptrunID", &promptrunID);
   candidate->SetBranchAddress("prompteventID", &prompteventID);
@@ -26,8 +25,13 @@ void randomize(string coincidencefile, string treename, int step, const vector<d
 
   for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
     candidate->GetEvent(iEv);
-    cout << promptrunID << prompteventID <<delayedrunID << delayedeventID << posdiff_4 << tickdiff50_4 << endl;
+    //cout << promptrunID << prompteventID <<delayedrunID << delayedeventID <<"  "<< posdiff_4 <<"  " <<tickdiff50_4*20./1000./1000. << endl;
+    cout << "Original: " << posdiff_4 <<"  " <<tickdiff50_4*20./1000./1000. << endl;
+    PH_posdiff_4 = posdiff_4;
+    //PH_tickdiff50_4 = tickdiff50_4;
     //randomize
+    candidate->GetEvent(iEv+step);
+    cout << "Randomized: " << PH_posdiff_4 << "   " <<tickdiff50_4*20./1000./1000. << endl;
   }
   
   //TFile *writeFile = new TFile("./candidate_files/candidate.root","RECREATE");//CHANGE PATH LATER
