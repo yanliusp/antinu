@@ -21,7 +21,7 @@ int main () {
   int filesize = 1000000;
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
-  const vector<double> delayed_cuts={2.5,0.9}; //energy, nhits
+  const vector<double> delayed_cuts={0.0,9.9}; //energy, nhits
   const vector<double> coincidence_cuts={2000.,2500.}; //time, position
 
   //make skim files from ntuples(data)

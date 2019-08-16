@@ -57,7 +57,7 @@ void coincidence(string scanfile, string treename, const vector<double> &coincid
         for (int i=0;i<3;i++) posdiff_4 = posdiff_4 + pow (posv[i]-promptposv[i], 2.0);
         posdiff_4 = sqrt(posdiff_4);
         if(tickdiff50_4*20./1000.<coincidence_cuts[0]) cout << "yes" << endl;
-        if(posdiff_4<coincidence_cuts[1]) cout << "pos: " << posdiff_4 << endl;
+        if(posdiff_4<coincidence_cuts[1]) cout << "pos: " << posdiff_4 << "   time: " << tickdiff50_4*20./1000. << endl;
         }
       }
     }
