@@ -24,14 +24,13 @@ void write(const vector<double> & coincidence_cuts) {
   //cout << "timediff cut: " << coincidence_cuts[0] << endl;
   //cout << "posidiff cut: " << coincidence_cuts[1] << endl;
 
-  for(step=0; step<10; step++) {
+  for(step=0; step<1000; step++) {
     event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
-    cout << event << endl;
     count.Fill();
   }
   
   writeFile->cd();
-  count.Write("count");
+  count.Write("final");
   writeFile->Close();
   cout << "write to " << "./count.root" << endl;
 

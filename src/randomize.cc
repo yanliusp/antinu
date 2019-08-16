@@ -24,9 +24,6 @@ int randomize(string coincidencefile, string treename, int step, const vector<do
   candidate->SetBranchAddress("posdiff_4", &posdiff_4);
   candidate->SetBranchAddress("tickdiff50_4", &tickdiff50_4);
 
-  cout << "tickdiff " << coincidence_cuts[0] << endl;
-  cout << "posdiff " << coincidence_cuts[1] << endl;
-
   counter = 0;
   for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
     //initialize value
@@ -38,10 +35,8 @@ int randomize(string coincidencefile, string treename, int step, const vector<do
     if (iEv+step>=candidate->GetEntries()) candidate->GetEvent(iEv+step-candidate->GetEntries()); else candidate->GetEvent(iEv+step);
 
     //apply cuts
-    if (PH_posdiff_4<coincidence_cuts[1] && tickdiff50_4<coincidence_cuts[0]) {
-      cout << "Randomized: " << PH_posdiff_4 << "   " <<tickdiff50_4 << endl;
-      counter++;
-    }
+    if (PH_posdiff_4<coincidence_cuts[1] && tickdiff50_4<coincidence_cuts[0]) counter++;
+      //cout << "Randomized: " << PH_posdiff_4 << "   " <<tickdiff50_4 << endl;
   }
   
   file.Close();
