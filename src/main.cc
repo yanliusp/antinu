@@ -40,7 +40,7 @@ int main () {
 
   //randomization && applying cuts
   //Method: "Moving to the next"
-  randomize("./candidate_files/candidate.root", "candidate", 1, coincidence_cuts);
+  randomize("./candidate_files/candidate.root", "candidate", 10, coincidence_cuts);
 
   return 0;
 }
