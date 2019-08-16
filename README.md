@@ -19,6 +19,14 @@
 
 More importantly, should start thinking about randomization now.
 
+2019.Aug.16: RANDOMIZATION
+
+The idea is, randomization can happen at any given point, and still won't affect the integrity of the method. For example, imagine if the detector had a higher threshold than what it actually does, the integrity of the method is not affected at all (You can't say the method only works if the detector has a threshold of 4, or 5, or 6.). Now the method also doesn't care about the threshold is a hardware one, or a software one. So all the global cuts, does not have an impact 'per say'.
+
+However, the more cuts we applied, the long time interval between background events, and the better the effect of 'randomization'. In light of this, the randomization should be carried out after all global cuts are applied.
+
+I think the same reasoning can apply to indivisual cuts as well. but I might need to think about it more.
+
 ### General
 
 ### Code logic
