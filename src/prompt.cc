@@ -48,14 +48,12 @@ void delayed_select(string scanfile, string treename, const vector<double> &dela
   TTree *scan = (TTree *)file.Get(treename.c_str());
 
   //check if prompt branch exists
-  TBranch *checkBr = (TBranch*) scan->GetListOfBranches()->FindObject("prompt");
-  if (!checkBr) throw std::invalid_argument("No prompts has been identified!")
-  else {
+  TBranch *checkBr = (TBranch*) scan->GetListOfBranches()->FindObject("delayed");
+  if (!checkBr) {
 
-    bool prompt,delayed;
+    bool delayed;
     int nhits;
     double energy;
-    scan->SetBranchAddress("prompt", &prompt);
     scan->SetBranchAddress("nhits", &nhits);
     scan->SetBranchAddress("energy", &energy);
     
@@ -66,23 +64,14 @@ void delayed_select(string scanfile, string treename, const vector<double> &dela
 
       //applying cuts
       delayed = false;
-      //identify prompt candidate
-      if (!prompt) { delayedBr->Fill; continue;}
-      for (int next=1;delayed=true;next++) {
-        scan->GetEvent(iEv+next);
-        if (energy>delayed_cuts[0] && nhits>delayed_cuts[0]) delayed = true;
-      }
+      if (energy>delayed_cuts[0] && nhits>delayed_cuts[0]) delayed = true;
       delayedBr->Fill();
-    }
-
-    //fill delayedBr
-    for(int iEv=0; iEv<scan->GetEntries(); iEv++) {
-      if(delayed)
-      
-    }
+    } 
 
     scan->Write("scandata", TObject::kOverwrite);
-  }
+
+  } else cout << "Branch \"delayed\" already exists in " << scanfile.c_str() <<"!" << endl;
   file.Close();
+
   return;
 }

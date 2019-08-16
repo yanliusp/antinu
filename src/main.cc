@@ -20,6 +20,7 @@ int main () {
   int filesize = 1000000;
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
+  const vector<double> delayed_cuts={0.,0.9}; //energy, nhits
 
   //make skim files from ntuples(data)
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
@@ -30,5 +31,6 @@ int main () {
   //randomization && applying cuts
   //Method: "Moving to the next"
   prompt_select("./scan_files/scan.root","scandata", prompt_cuts);
+  delayed_select("./scan_files/scan.root","scandata", delayed_cuts);
   return 0;
 }
