@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void randomize(string coincidencefile, string treename, int step, const vector<double> &coincidence_cuts); 
+int randomize(string coincidencefile, string treename, int step, const vector<double> &coincidence_cuts); 
 
 #endif
 

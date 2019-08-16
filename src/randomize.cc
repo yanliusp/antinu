@@ -8,10 +8,11 @@
 
 using namespace std;
 
-void randomize(string coincidencefile, string treename, int step, const vector<double> &coincidence_cuts) {
+int randomize(string coincidencefile, string treename, int step, const vector<double> &coincidence_cuts) {
   TFile file(coincidencefile.c_str(), "READ"); 
   TTree *candidate = (TTree *)file.Get(treename.c_str());
 
+  int counter;
   int delayedrunID, delayedeventID, promptrunID, prompteventID;
   double posdiff_4, PH_posdiff_4;
   ULong64_t tickdiff50_4;//, PH_tickdiff50_4;
@@ -25,24 +26,18 @@ void randomize(string coincidencefile, string treename, int step, const vector<d
 
   for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
     candidate->GetEvent(iEv);
-    if (posdiff_4<coincidence_cuts[1] && tickdiff50_4*20./1000.<coincidence_cuts[0]) 
-    cout << "Original: " << posdiff_4 <<"  " <<tickdiff50_4*20./1000./1000. << endl;
     PH_posdiff_4 = posdiff_4;
     //PH_tickdiff50_4 = tickdiff50_4;
     //randomize
-    if (iEv+step>=candidate->GetEntries()) candidate->GetEvent(iEv+step-candidate->GetEntries());
-    else candidate->GetEvent(iEv+step);
+    if (iEv+step>=candidate->GetEntries()) candidate->GetEvent(iEv+step-candidate->GetEntries()); else candidate->GetEvent(iEv+step);
+
+    //apply cuts
     if (PH_posdiff_4<coincidence_cuts[1] && tickdiff50_4*20./1000.<coincidence_cuts[0]) 
-    cout << "Randomized: " << PH_posdiff_4 << "   " <<tickdiff50_4*20./1000./1000. << endl;
+    counter++;
+    //cout << "Randomized: " << PH_posdiff_4 << "   " <<tickdiff50_4*20./1000./1000. << endl;
   }
   
-  //TFile *writeFile = new TFile("./candidate_files/candidate.root","RECREATE");//CHANGE PATH LATER
-  //writeFile->cd();
-  //candidate.Write("candidate");
-  //writeFile->Close();
-  //cout << "write to " << "./candidate_files/candidate.root" << endl;
-
   file.Close();
 
-  return;
+  return counter;
 }
