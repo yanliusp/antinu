@@ -15,11 +15,15 @@
 
 ## Thoughts
 
+3c6e72c: This commit should mark the finish of construction of basic event selection framework. It is possible to merge all the functions (skim, scan, individual and coincidence) into one .cc/hh file, since it looks like it's going to be a streamline process.
+
+More importantly, should start thinking about randomization now.
+
 ### General
 
 ### Code logic
 
-1. skim() will read in ntuples(data) and write to skimfiles (skim_s%.root), storing under skim\_files.
+1. skim() will read in ntuples(data) and write to skimfiles (skim\_s%.root), storing under skim\_files.
 
 	* apply cuts: triggerWord, dataCleaning and fitValid.
 
@@ -43,11 +47,13 @@
 	
 4. coincidence() applies coincidence cuts (time and position difference) between prompt and delayed events.
 
-	* Validated coincidence cuts algorithm. It is working as expected. (2019.Aug.16)
+	* validated coincidence cuts algorithm. It is working as expected. (2019.Aug.16)
 
-	* need to think about whether/what/how to store these events.
+	* store promptId, delayedId, position diff, time diff into a new root file (candidate.root). It's easy to add more branches if wanted.
 
 ### Randomization
+
+
 
 
 ### Obsoleted
