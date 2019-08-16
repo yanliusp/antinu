@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void coincidence(string scanfile, string treename, const vector<double> &coincidence_cuts); 
+void coincidence(string scanfile, string treename); 
 
 #endif
 

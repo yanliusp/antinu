@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void coincidence(string scanfile, string treename, const vector<double> &coincidence_cuts) {
+void coincidence(string scanfile, string treename) {
 
   TFile file(scanfile.c_str(), "READ"); 
   TTree *scan = (TTree *)file.Get(treename.c_str());
@@ -64,8 +64,6 @@ void coincidence(string scanfile, string treename, const vector<double> &coincid
           posv = {posx,posy,posz};
           for (int i=0;i<3;i++) posdiff_4 = posdiff_4 + pow (posv[i]-promptposv[i], 2.0);
           posdiff_4 = sqrt(posdiff_4);
-          if(tickdiff50_4*20./1000.<coincidence_cuts[0]) cout <<"yes" << endl; //PLACEHOLDER
-          if(posdiff_4<coincidence_cuts[1]) cout << "yes\r" << flush; //PLACEHOLDER
 
           candidate.Fill();
         }

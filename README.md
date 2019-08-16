@@ -53,11 +53,17 @@ I think the same reasoning can apply to indivisual cuts as well. but I might nee
 
 	* event\_select() checks all events if they pass the criteria (energy and nhits), write to a branch named "prompt", and then save to the same file (scan.root)
 	
-4. coincidence() applies coincidence cuts (time and position difference) between prompt and delayed events.
+4. coincidence() selct pairs of coincidence events and write to a new candidate.root file. It *DOES NOT* apply coincidence cuts (time and position difference) between prompt and delayed events.
 
 	* validated coincidence cuts algorithm. It is working as expected. (2019.Aug.16)
 
 	* store promptId, delayedId, position diff, time diff into a new root file (candidate.root). It's easy to add more branches if wanted.
+
+5. randomize() randomize the time difference (if step is set to 0 then no randomization) and then (possibly) applies the coincidence cuts.
+
+	* validated coincidence cuts algorithm. It is working as expected. (2019.Aug.16)
+
+	* it's possible to write to a root file with a single branch that contains number of events that pass the cuts -> useful to draw the bg distribution. NOTE: One branch for a set of cuts. the root file could be contains multiple branches.
 
 ### Randomization
 

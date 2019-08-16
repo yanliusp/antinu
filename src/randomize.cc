@@ -25,13 +25,14 @@ void randomize(string coincidencefile, string treename, int step, const vector<d
 
   for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
     candidate->GetEvent(iEv);
-    //cout << promptrunID << prompteventID <<delayedrunID << delayedeventID <<"  "<< posdiff_4 <<"  " <<tickdiff50_4*20./1000./1000. << endl;
+    if (posdiff_4<coincidence_cuts[1] && tickdiff50_4*20./1000.<coincidence_cuts[0]) 
     cout << "Original: " << posdiff_4 <<"  " <<tickdiff50_4*20./1000./1000. << endl;
     PH_posdiff_4 = posdiff_4;
     //PH_tickdiff50_4 = tickdiff50_4;
     //randomize
     if (iEv+step>=candidate->GetEntries()) candidate->GetEvent(iEv+step-candidate->GetEntries());
     else candidate->GetEvent(iEv+step);
+    if (PH_posdiff_4<coincidence_cuts[1] && tickdiff50_4*20./1000.<coincidence_cuts[0]) 
     cout << "Randomized: " << PH_posdiff_4 << "   " <<tickdiff50_4*20./1000./1000. << endl;
   }
   
