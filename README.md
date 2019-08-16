@@ -37,12 +37,15 @@
 
 	* currently only storing into one scanfile -> don't expect to to have a very large sample at this point.
 
-3. prompt() and delayed() is expect to apply individual cuts
+3. individual() applies individual cuts on prompt and delayed events, respectively.
 
-	* maybe this should be written into the same .cc file
-
-	* prompt\_select() checks all events if they pass the criteria (energy and nhits), write to a branch named "prompt", and then save to the same file (scan.root)
+	* event\_select() checks all events if they pass the criteria (energy and nhits), write to a branch named "prompt", and then save to the same file (scan.root)
 	
+4. coincidence() applies coincidence cuts (time and position difference) between prompt and delayed events.
+
+	* need to double check logic!!! (IMPORTANT)
+
+	* need to think about whether/what/how to store these events.
 
 ### Randomization
 
