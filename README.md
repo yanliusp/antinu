@@ -43,7 +43,7 @@
 	
 4. coincidence() applies coincidence cuts (time and position difference) between prompt and delayed events.
 
-	* need to double check logic!!! (IMPORTANT)
+	* Validated coincidence cuts algorithm. It is working as expected. (2019.Aug.16)
 
 	* need to think about whether/what/how to store these events.
 
