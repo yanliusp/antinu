@@ -10,8 +10,10 @@ using namespace std;
 
 void coincidence(string scanfile, string treename, const vector<double> &coincidence_cuts) {
 
-  TFile file(scanfile.c_str(), "UPDATE"); 
+  TFile file(scanfile.c_str(), "READ"); 
   TTree *scan = (TTree *)file.Get(treename.c_str());
+
+  TTree candidate("candidate", "antinu candidates");
 
   bool prompt, delayed, tag;
   int runID, eventID, promptrunID, prompteventID;
@@ -31,8 +33,12 @@ void coincidence(string scanfile, string treename, const vector<double> &coincid
   scan->SetBranchAddress("posy", &posy);
   scan->SetBranchAddress("posz", &posz);
 
-  //TBranch *tickdiffBr = scan->Branch("tickdiff50_4", &tickdiff50_4, "tickdiff50_4/l");
-  //TBranch *posdiffBr = scan->Branch("posdiff_4", &posdiff_4, "posdiff_4/D");
+  candidate.Branch("promptrunID", &promptrunID, "promptrunID/I");
+  candidate.Branch("prompteventID", &prompteventID, "prompteventID/I");
+  candidate.Branch("delayedrunID", &runID, "delayedrunID/I");
+  candidate.Branch("delayedeventID", &eventID, "delayedeventID/I");
+  candidate.Branch("posdiff_4", &posdiff_4, "posdiff_4/D");
+  candidate.Branch("tickdiff50_4", &tickdiff50_4, "tickdiff50_4/l");
 
   for(int iEv=0; iEv<scan->GetEntries(); iEv++) {
     scan->GetEvent(iEv);
@@ -70,13 +76,18 @@ void coincidence(string scanfile, string treename, const vector<double> &coincid
             cout << "promptID: " << promptrunID <<" " <<prompteventID <<
                   "  delayedID: " << runID <<" " << eventID << endl; 
           }
+          candidate.Fill();
         }
       }
     }
     //tickdiffBr->Fill(); posdiffBr->Fill();
   }
   
-  //scan->Write("scandata", TObject::kOverwrite);
+  TFile *writeFile = new TFile("./scan_files/candidate.root","RECREATE");//CHANGE PATH LATER
+  writeFile->cd();
+  candidate.Write("candidate");
+  writeFile->Close();
+  cout << "write to " << "./scan_files/candidate.root" << endl;
 
   file.Close();
 
