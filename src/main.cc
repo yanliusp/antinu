@@ -24,7 +24,7 @@ int main () {
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
   const vector<double> delayed_cuts={1.5,9.9}; //energy, nhits
-  const vector<double> coincidence_cuts={20000000.,6500.}; //time, position
+  const vector<double> coincidence_cuts={2000./20.*1000,6500.}; //time [us], position
 
   //make skim files from ntuples(data)
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
