@@ -20,9 +20,6 @@ void write(const string &branchname, const vector<double> & coincidence_cuts) {
   count.Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
   count.Branch("step", &step, "step/I");
 
-  //SOMETHING FUNNY IS HAPPENNING HERE. I HAVE TO coincidence_cuts for the loop
-  //cout << "timediff cut: " << coincidence_cuts[0] << endl;
-  //cout << "posidiff cut: " << coincidence_cuts[1] << endl;
 
   for(step=0; step<1000; step++) {
     event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
