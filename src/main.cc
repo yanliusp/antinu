@@ -3,6 +3,7 @@
 #include "individual.hh"
 #include "coincidence.hh"
 #include "randomize.hh"
+#include "write.hh"
 
 #include <sys/stat.h>
 
@@ -23,7 +24,7 @@ int main () {
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
   const vector<double> delayed_cuts={1.5,9.9}; //energy, nhits
-  const vector<double> coincidence_cuts={2000.,2500.}; //time, position
+  const vector<double> coincidence_cuts={20000000.,6500.}; //time, position
 
   //make skim files from ntuples(data)
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
@@ -40,7 +41,9 @@ int main () {
 
   //randomization && applying cuts
   //Method: "Moving to the next"
-  randomize("./candidate_files/candidate.root", "candidate", 0, coincidence_cuts);
+  //randomize("./candidate_files/candidate.root", "candidate", 0, coincidence_cuts);
+
+  write(coincidence_cuts);
 
   return 0;
 }
