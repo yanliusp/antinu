@@ -1,6 +1,6 @@
 #include "skim.hh"
 #include "scan.hh"
-#include "prompt.hh"
+#include "individual.hh"
 
 #include <sys/stat.h>
 

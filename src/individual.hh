@@ -1,5 +1,5 @@
-#ifndef PROMPT_H
-#define PROMPT_H
+#ifndef INDIVIDUAL_H
+#define INDIVIDUAL_H
 
 #include <string>
 
