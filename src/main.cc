@@ -1,6 +1,7 @@
 #include "skim.hh"
 #include "scan.hh"
 #include "individual.hh"
+#include "coincidence.hh"
 
 #include <sys/stat.h>
 
@@ -20,7 +21,8 @@ int main () {
   int filesize = 1000000;
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
-  const vector<double> delayed_cuts={0.,0.9}; //energy, nhits
+  const vector<double> delayed_cuts={2.5,0.9}; //energy, nhits
+  const vector<double> coincidence_cuts={2000.,2500.}; //time, position
 
   //make skim files from ntuples(data)
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
@@ -31,6 +33,9 @@ int main () {
   //apply individual cuts
   event_select("./scan_files/scan.root","scandata", "prompt", prompt_cuts);
   event_select("./scan_files/scan.root","scandata", "delayed", delayed_cuts);
+
+  //apply coincidence cuts
+  coincidence("./scan_files/scan.root","scandata", coincidence_cuts);
 
   //randomization && applying cuts
   //Method: "Moving to the next"
