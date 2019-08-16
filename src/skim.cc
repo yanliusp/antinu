@@ -41,6 +41,7 @@ void skim(const string &ntuplepath, int filesize) {
   skim->Branch("udotr",&udotr,"udotr/D");
 
   int counter = 1;
+  cout << "Total number of events to be skimmed: " << chain->GetEntries() << endl;
   for (int iEv=0; iEv<chain->GetEntries(); iEv++) {
       chain->GetEvent(iEv);
 

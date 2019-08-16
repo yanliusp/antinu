@@ -35,6 +35,7 @@ void event_select(string scanfile, string treename, string eventype, const vecto
     }
   
     scan->Write("scandata", TObject::kOverwrite);
+    cout << "Write Branch \"" << eventype << "\" to " << scanfile.c_str() << endl;
 
   } else cout << "Branch \"" << eventype << "\" already exists in " << scanfile.c_str() <<"!" << endl;
   file.Close();

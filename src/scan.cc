@@ -46,6 +46,7 @@ void scan(const vector<double> &global_cuts) {
   curtick50 = clockCount50;
   curposv = {posx,posy,posz};
 
+  cout << "Total number of events to be scanned: " << chain->GetEntries() << endl;
   for (int iEv=1; iEv<chain->GetEntries(); iEv++) {
       chain->GetEvent(iEv);
 
@@ -76,6 +77,7 @@ void scan(const vector<double> &global_cuts) {
   writeFile->cd();
   scan->Write("scandata");
   cout << "write to ./scan_files/scan.root" << endl;
+  cout << "Total number of events after scan: " << scan->GetEntries() << endl;
   writeFile->Close();
   return;
 }
