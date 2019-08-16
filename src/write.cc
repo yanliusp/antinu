@@ -18,7 +18,7 @@ void write(const vector<double> & coincidence_cuts) {
   int step, event;
 
   count.Branch("event", &event, "event/I");
-  count.Branch("step", &count, "count/I");
+  count.Branch("step", &step, "step/I");
 
   //SOMETHING FUNNY IS HAPPENNING HERE. I HAVE TO coincidence_cuts for the loop
   //cout << "timediff cut: " << coincidence_cuts[0] << endl;

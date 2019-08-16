@@ -19,8 +19,9 @@ int main () {
   const string SKIMDIR = "./skim_files/skim_s0.root";
   const string SCANDIR = "./scan_files/scan.root";
   const string ntuplepath = "/data/snoplus/processed_data/timebin_4/*ntuple.root";
-  //number of entries per skim file
+  // number of entries per skim file
   int filesize = 1000000;
+  // cuts
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
   const vector<double> delayed_cuts={1.5,9.9}; //energy, nhits
