@@ -74,11 +74,11 @@ void coincidence(string scanfile, string treename, const vector<double> &coincid
     //tickdiffBr->Fill(); posdiffBr->Fill();
   }
   
-  TFile *writeFile = new TFile("./scan_files/candidate.root","RECREATE");//CHANGE PATH LATER
+  TFile *writeFile = new TFile("./candidate_files/candidate.root","RECREATE");//CHANGE PATH LATER
   writeFile->cd();
   candidate.Write("candidate");
   writeFile->Close();
-  cout << "write to " << "./scan_files/candidate.root" << endl;
+  cout << "write to " << "./candidate_files/candidate.root" << endl;
 
   file.Close();
 
