@@ -12,6 +12,7 @@ using namespace std;
 
 void prompt_select(string scanfile, string treename, const vector<double> &prompt_cuts);
 
+void delayed_select(string scanfile, string treename, const vector<double> &delayed_cuts);
 
 #endif
 
