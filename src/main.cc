@@ -6,6 +6,12 @@
 #include "write.hh"
 
 #include <sys/stat.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <sstream>
+#include <iterator>
+#include <iostream>
 
 using namespace std;
 
@@ -21,11 +27,20 @@ int main () {
   const string ntuplepath = "/data/snoplus/processed_data/timebin_4/*ntuple.root";
   // number of entries per skim file
   int filesize = 1000000;
+
   // cuts
   const vector<double> global_cuts = {5300., 0.0}; //FV, u.r
   const vector<double> prompt_cuts={2.5,0.9}; //energy, nhits
   const vector<double> delayed_cuts={1.5,9.9}; //energy, nhits
-  const vector<double> coincidence_cuts={400000./20.*1000,6500.}; //time [us], position
+  const vector<double> coincidence_cuts={2000./20.*1000,6500.}; //time [us], position
+
+  //convert cuts to a string
+  ostringstream ocuts;
+  copy(global_cuts.begin(), global_cuts.end(), std::ostream_iterator<double>(ocuts, "_"));
+  copy(prompt_cuts.begin(), prompt_cuts.end(), std::ostream_iterator<double>(ocuts, "_"));
+  copy(delayed_cuts.begin(), delayed_cuts.end(), std::ostream_iterator<double>(ocuts, "_"));
+  copy(coincidence_cuts.begin(), coincidence_cuts.end(), std::ostream_iterator<double>(ocuts, "_"));
+  const string cuts = ocuts.str();
 
   //make skim files from ntuples(data)
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
@@ -44,7 +59,7 @@ int main () {
   //Method: "Moving to the next"
   //randomize("./candidate_files/candidate.root", "candidate", 0, coincidence_cuts);
 
-  write(coincidence_cuts);
+  write(cuts, coincidence_cuts);
 
   return 0;
 }

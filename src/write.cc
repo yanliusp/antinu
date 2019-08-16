@@ -10,14 +10,14 @@
 
 using namespace std;
 
-void write(const vector<double> & coincidence_cuts) {
+void write(const string &branchname, const vector<double> & coincidence_cuts) {
 
   TFile *writeFile = new TFile("./count.root","RECREATE");//CHANGE PATH LATER
   TTree count("count", "final count");
 
   int step, event;
 
-  count.Branch("event", &event, "event/I");
+  count.Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
   count.Branch("step", &step, "step/I");
 
   //SOMETHING FUNNY IS HAPPENNING HERE. I HAVE TO coincidence_cuts for the loop

@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void write(const vector<double> &coincidence_cuts);
+void write(const string &branchname, const vector<double> & coincidence_cuts);
 
 #endif
 
