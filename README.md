@@ -15,9 +15,21 @@
 
 ## Thoughts
 
-3c6e72c: This commit should mark the finish of construction of basic event selection framework. It is possible to merge all the functions (skim, scan, individual and coincidence) into one .cc/hh file, since it looks like it's going to be a streamline process.
+2019.Aug.16: EVENT SELECTION CRITERIA
 
-More importantly, should start thinking about randomization now.
+need to think about what are the possible criteria can will be applied:
+
+	* triggerWord, dataCleaning, fitValid
+	* global criteria:
+		* FV, udotr, beta14, ITR 
+	* individual criteria: (applies only on either prompt or delayed)
+		* energy, nhits
+	* coincidence criteria:
+		* time, position
+
+What else?
+
+###obsoleted
 
 2019.Aug.16: RANDOMIZATION
 
@@ -26,6 +38,12 @@ The idea is, randomization can happen at any given point, and still won't affect
 However, the more cuts we applied, the long time interval between background events, and the better the effect of 'randomization'. In light of this, the randomization should be carried out after all global cuts are applied.
 
 I think the same reasoning can apply to indivisual cuts as well. but I might need to think about it more.
+
+------------------------------------------
+
+3c6e72c: This commit should mark the finish of construction of basic event selection framework. It is possible to merge all the functions (skim, scan, individual and coincidence) into one .cc/hh file, since it looks like it's going to be a streamline process.
+
+More importantly, should start thinking about randomization now.
 
 ### General
 
