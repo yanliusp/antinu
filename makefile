@@ -4,7 +4,7 @@ RATROOT := $(shell echo $(RATROOT))
 RAT_LIBRARY_PATH := $(RATROOT)/lib
 RAT_INCLUDE_PATH := $(RATROOT)/include
 RAT_LIBRARY := RATEvent_Linux
-PROGRAM := ./src/skim.cc ./src/scan.cc ./src/individual.cc ./src/coincidence.cc ./src/main.cc
+PROGRAM := ./src/skim.cc ./src/scan.cc ./src/individual.cc ./src/coincidence.cc ./src/randomize.cc ./src/main.cc
 OUTPUT_FILE := main
 
 standard: $(PROGRAM)

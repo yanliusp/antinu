@@ -2,6 +2,7 @@
 #include "scan.hh"
 #include "individual.hh"
 #include "coincidence.hh"
+#include "randomize.hh"
 
 #include <sys/stat.h>
 
@@ -39,6 +40,7 @@ int main () {
 
   //randomization && applying cuts
   //Method: "Moving to the next"
+  randomize("./candidate_files/candidate.root", "candidate", 1, coincidence_cuts);
 
   return 0;
 }
