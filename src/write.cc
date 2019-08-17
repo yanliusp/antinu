@@ -19,15 +19,14 @@ void write(const string &branchname, const vector<double> & coincidence_cuts) {
     //cout << "Tree \"nodata\" already exists, reading Tree.." << endl;
 
     TTree *nodata = (TTree *)writeFile->Get("nodata");
-////////UGLY
 
+    //check if branch exists
     TBranch *checkBr = (TBranch*) nodata->GetListOfBranches()->FindObject(branchname.c_str());
     if (!checkBr) {
 
       int step, event;
 
       TBranch *thisBr = nodata->Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
-      //nodata->Branch("step", &step, "step/I"); THINK MORE ABOUT THIS!
 
       for(step=0; step<1000; step++) {
         event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
@@ -40,12 +39,11 @@ void write(const string &branchname, const vector<double> & coincidence_cuts) {
       cout << "write to " << "./count.root" << endl;
     } else cout << "Branch \"" << branchname << "\" already exists in ./count.root!" << endl;
   }
-////////UGLY
+
   else {
     //cout << "Tree \"nodata\" does not exists, creating Tree.." << endl;
 
     TTree *nodata = new TTree("nodata", "test");
-    //(void) nodata;}
 
     int step, event;
 
