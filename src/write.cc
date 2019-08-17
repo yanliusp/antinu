@@ -12,24 +12,55 @@ using namespace std;
 
 void write(const string &branchname, const vector<double> & coincidence_cuts) {
 
-  TFile *writeFile = new TFile("./count.root","RECREATE");//CHANGE PATH LATER
-  TTree *nodata = new TTree("nodata", "number of events that passes cuts");
+  TFile *writeFile = new TFile("./count.root","UPDATE");//CHANGE PATH LATER
 
-  int step, event;
+  //check if tree exists
+  if (writeFile->GetListOfKeys()->Contains("nodata")) {
+    //cout << "Tree \"nodata\" already exists, reading Tree.." << endl;
 
-  nodata->Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
-  nodata->Branch("step", &step, "step/I");
+    TTree *nodata = (TTree *)writeFile->Get("nodata");
+////////UGLY
 
+    TBranch *checkBr = (TBranch*) nodata->GetListOfBranches()->FindObject(branchname.c_str());
+    if (!checkBr) {
 
-  for(step=0; step<1000; step++) {
-    event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
-    nodata->Fill();
-  }
+      int step, event;
+
+      TBranch *thisBr = nodata->Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
+      //nodata->Branch("step", &step, "step/I"); THINK MORE ABOUT THIS!
+
+      for(step=0; step<1000; step++) {
+        event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
+        thisBr->Fill();
+      }
   
-  writeFile->cd();
-  nodata->Write();
-  writeFile->Close();
-  cout << "write to " << "./count.root" << endl;
+      writeFile->cd();
+      nodata->Write("",TObject::kOverwrite);
+      writeFile->Close();
+      cout << "write to " << "./count.root" << endl;
+    } else cout << "Branch \"" << branchname << "\" already exists in ./count.root!" << endl;
+  }
+////////UGLY
+  else {
+    //cout << "Tree \"nodata\" does not exists, creating Tree.." << endl;
 
+    TTree *nodata = new TTree("nodata", "test");
+    //(void) nodata;}
+
+    int step, event;
+
+    nodata->Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
+    nodata->Branch("step", &step, "step/I");
+  
+    for(step=0; step<1000; step++) {
+      event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
+      nodata->Fill();
+    }
+    
+    writeFile->cd();
+    nodata->Write("",TObject::kOverwrite);
+    writeFile->Close();
+    cout << "write to " << "./count.root" << endl;
+  }
   return;
 }
