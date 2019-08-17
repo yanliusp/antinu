@@ -1,6 +1,6 @@
 # Antinu Search in Water
 
-## underlining idea can found on [DocDB-6044](https://www.snolab.ca/snoplus/private/DocDB/cgi/ShowDocument?docid=6044)
+## Underlining idea can found on [DocDB-6044](https://www.snolab.ca/snoplus/private/DocDB/cgi/ShowDocument?docid=6044)
 
 ## The analysis can be broke into 4 subpart:
 
@@ -14,12 +14,6 @@
 >
 
 ## Thoughts
-
-2019.Aug.16: OVERVIEW OF RESULTS AND COMPARISON
-
-need to think about how the organization looks like to compare results (results mean confidence levels here). Save everything into a root file? Would that be too dangerous (of overwrite)? Maybe not if I do it the right way.
-
---------------------------------------------------
 
 2019.Aug.16: EVENT SELECTION CRITERIA
 
@@ -37,6 +31,16 @@ What else?
 
 ### Obsoleted
 
+2019.Aug.16: OVERVIEW OF RESULTS AND COMPARISON
+
+need to think about how the organization looks like to compare results (results mean confidence levels here). Save everything into a root file? Would that be too dangerous (of overwrite)? Maybe not if I do it the right way.
+
+ANSWER: all results from different sets of cuts are stored in one root file (currently named count.root); each set of cuts are assigned to a unique branch, named with the full cuts; each branch can store an arbitrary number of random dataset results, where the result from the real dataset is stored in the first entry. 
+
+NOTE: When doing grid search, as the grid inteval gets smaller, it's possible to increase number of random datasets.
+
+-------------------------------------------------
+
 2019.Aug.16: RANDOMIZATION
 
 The idea is, randomization can happen at any given point, and still won't affect the integrity of the method. For example, imagine if the detector had a higher threshold than what it actually does, the integrity of the method is not affected at all (You can't say the method only works if the detector has a threshold of 4, or 5, or 6.). Now the method also doesn't care about the threshold is a hardware one, or a software one. So all the global cuts, does not have an impact 'per say'.
@@ -50,6 +54,19 @@ I think the same reasoning can apply to indivisual cuts as well. but I might nee
 3c6e72c: This commit should mark the finish of construction of basic event selection framework. It is possible to merge all the functions (skim, scan, individual and coincidence) into one .cc/hh file, since it looks like it's going to be a streamline process.
 
 More importantly, should start thinking about randomization now.
+
+-------------------------------------------------
+
+2019.Aug.15: fitValid seemed to have a **HUGE** effect to remove background.
+
+	* this is becaues most the of events below 15 nhits are not fitted in this processing. Nothing strange here.
+
+-------------------------------------------------
+
+2019.Aug.14: does it make more sence to skim to a new TTree?
+
+	* basically have another new ntuple to write event that passes triggerWord, dataCleaning and fitValid?
+	* also added a branch that contains the time differences. 
 
 ## General
 
@@ -93,13 +110,4 @@ More importantly, should start thinking about randomization now.
 
 	* two inputs: random\_step, and coincidence cuts
 	* output: a root file that contains the number of events passed all cuts (see: ./plots/example\_2019.Aug.16.pdf)
-
-### Obsoleted
-1. 2019.Aug.14:
-   does it make more sence to skim to a new TTree?
-	* basically have another new ntuple to write event that passes triggerWord, dataCleaning and fitValid?
-	* also added a branch that contains the time differences. 
-
-2. 2019.Aug.15:
-    fitValid seemed to have a **HUGE** effect to remove background.
-	* this is becaues most the of events below 15 nhits are not fitted in this processing. Nothing strange here.
+	* output: this root file can have multiple branches corresponding to different sets of cuts. The first entry will save the result from cuts on the real dataset.
