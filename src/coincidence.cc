@@ -11,6 +11,7 @@ using namespace std;
 void coincidence(string scanfile, string treename) {
 
   TFile file(scanfile.c_str(), "READ"); 
+  TFile *writeFile = new TFile("./candidate_files/candidate.root","RECREATE");//CHANGE PATH LATER
   TTree *scan = (TTree *)file.Get(treename.c_str());
 
   TTree candidate("candidate", "antinu candidates");
@@ -72,8 +73,7 @@ void coincidence(string scanfile, string treename) {
     //tickdiffBr->Fill(); posdiffBr->Fill();
   }
   
-  TFile *writeFile = new TFile("./candidate_files/candidate.root","RECREATE");//CHANGE PATH LATER
-  writeFile->cd();
+  //writeFile->cd();
   candidate.Write("candidate");
   writeFile->Close();
   cout << "write to " << "./candidate_files/candidate.root" << endl;
