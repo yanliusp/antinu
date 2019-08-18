@@ -21,7 +21,7 @@ using namespace std;
 void scan(const vector<double> &global_cuts) {
 
   TChain *chain = new TChain("skimdata"); 
-  chain->Add("./skim_files/skim_s2.root");
+  chain->Add("./skim_files/skim_s*.root");
 
   double posx, posy, posz, posr, udotr, posdiff;
   vector<double> curposv, posv; 
