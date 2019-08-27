@@ -30,7 +30,8 @@ void event_select(string scanfile, string treename, string eventype, const vecto
 
       //applying cuts
       bit = false;
-      if (energy>individual_cuts[0] && nhits>individual_cuts[0]) bit = true;
+      if (energy>individual_cuts[0] && nhits>individual_cuts[1] && nhits<individual_cuts[2]) bit = true;
+      cout << energy << "  " << nhits << "   " << bit << endl;
       bitBr->Fill();
     }
   

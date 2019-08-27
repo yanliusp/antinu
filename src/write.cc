@@ -28,8 +28,9 @@ void write(const string &branchname, const vector<double> & coincidence_cuts) {
 
       TBranch *thisBr = nodata->Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
 
-      for(step=0; step<100; step++) {
+      for(step=1; step<1000; step++) {
         event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
+        cout << "The " << step << " dataset has " << event << " in it" << endl;
         thisBr->Fill();
       }
   
@@ -50,8 +51,9 @@ void write(const string &branchname, const vector<double> & coincidence_cuts) {
     nodata->Branch(branchname.c_str(), &event, (branchname+"/I").c_str());
     nodata->Branch("step", &step, "step/I");
   
-    for(step=0; step<100; step++) {
+    for(step=1; step<1000; step++) {
       event = randomize("./candidate_files/candidate.root", "candidate", step, coincidence_cuts);
+      cout << "The " << step << " dataset has " << event << " in it" << endl;
       nodata->Fill();
     }
     

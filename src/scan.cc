@@ -27,7 +27,7 @@ void scan(const vector<double> &global_cuts) {
   chain->Add("./skim_files/timebin_5-2/skim_s*.root");
   chain->Add("./skim_files/timebin_6/skim_s*.root");
 
-  double posx, posy, posz, posr, udotr, posdiff;
+  double posx, posy, posz, posr, udotr, posdiff, itr, beta14;
   vector<double> curposv, posv; 
   ULong64_t clockCount50, curtick50, tickdiff50;
   chain->SetBranchAddress("clockCount50", &clockCount50);
@@ -37,6 +37,8 @@ void scan(const vector<double> &global_cuts) {
   chain->SetBranchAddress("posz", &posz);
   chain->SetBranchAddress("posr", &posr);
   chain->SetBranchAddress("udotr", &udotr);
+  chain->SetBranchAddress("itr", &itr);
+  chain->SetBranchAddress("beta14", &beta14);
 
   //declare ROOT objects
   TFile *writeFile = new TFile("./scan_files/scan.root","RECREATE");
@@ -58,6 +60,8 @@ void scan(const vector<double> &global_cuts) {
       //FV, u.r
       if ( posr>global_cuts[0]) continue;
       if (udotr<global_cuts[1]) continue;
+      if (  itr<=global_cuts[2]) continue;
+      if (beta14<=global_cuts[3] && beta14>=global_cuts[4]) continue;
 
       //calculate tickdiff50
       tickdiff50 = clockCount50-curtick50;
