@@ -54,7 +54,7 @@ int main () {
   event_select("./your_ntuple.root","output", "delayed", delayed_cuts);
 
   //apply coincidence cuts
-  coincidence("./scan_files/scan.root","scandata");
+  coincidence("./your_ntuple.root","output");
 
   //randomization && applying cuts
   //Method: "Moving to the next"
