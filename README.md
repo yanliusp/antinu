@@ -15,6 +15,14 @@
 
 ## Thoughts
 
+2019.Sep.7: THINGS TO DO
+
+Rather than using cuts -> now using a cumulative prob. calculation (see slides on Sep. 5 for Queen's group meeting). Things still need to be done:
+
+	* test that the method works for other cuts. Specifically, when relieving the nhit maximum cut on delayed events
+	* fit the distance distribution with more polynomials
+	* change to a likelihood analysis
+
 2019.Aug.16: EVENT SELECTION CRITERIA
 
 need to think about what are the possible criteria can will be applied:
