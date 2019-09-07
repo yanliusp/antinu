@@ -1,6 +1,5 @@
 #include <iostream>
-#include <string>
-
+#include <string> 
 #include <TH1.h>
 #include <TFile.h>
 #include <TTree.h>
@@ -31,17 +30,8 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   funcPosdiff->FixParameter(0, global_cuts[0]);
   funcPosdiff->FixParameter(1, hPosdiff->Integral()*100);
   hPosdiff->Fit("funcPosdiff", "M");
-  // write the cumulative function
-  TF1 *funccumuPosdiff = new TF1("funccumuPosdiff", "[1]*(([2]+3)/TMath::Power([0],3)/3.*x*x*x + ([3]+9./4.)/TMath::Power([0],4)/4.*TMath::Power(x,4) + ([4]+3./16.)/TMath::Power([0],6)/6.*TMath::Power(x,6) + [5]/TMath::Power([0],5)/5.*TMath::Power(x,5))", 0, 2*global_cuts[0]);
-  //funccumuPosdiff->SetParameters(funcPosdiff->GetParameter(0),funcPosdiff->GetParameter(1), funcPosdiff->GetParameter(2), funcPosdiff->GetParameter(3), funcPosdiff->GetParameter(4), funcPosdiff->GetParameter(5) );
-  funccumuPosdiff->SetParameters(funcPosdiff->GetParameters());
-  cout << funccumuPosdiff->GetParameter(0);
-  cout << funccumuPosdiff->GetParameter(2);
-  cout << funccumuPosdiff->GetParameter(3);
-  cout << funccumuPosdiff->GetParameter(4);
-  cout << funccumuPosdiff->GetParameter(5);
-  funccumuPosdiff->SetParameter(1, 1);
-  cout << funccumuPosdiff->GetParameter(1);
+
+  funcPosdiff->SetParameter(1, 1.);
 
   hTickdiff->Fit("expo");
   double lambda = hTickdiff->GetFunction("expo")->GetParameter(1);
@@ -50,6 +40,7 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
 
   double posdiff;
   ULong64_t tickdiff;
+  double product;
 
   candidate->SetBranchAddress("posdiff_4", &posdiff);
   candidate->SetBranchAddress("tickdiff50_4", &tickdiff);
@@ -57,12 +48,16 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   //fit for distance and time
   for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
     candidate->GetEvent(iEv);
+
+    cout << posdiff << " " << funcPosdiff->Integral(0., posdiff) << "   "  << 1 - TMath::Exp(lambda*(double)tickdiff) <<" " << tickdiff/1000*20 << endl;
+    product = funcPosdiff->Integral(0., posdiff) * (1 - TMath::Exp(lambda*(double)tickdiff));
+    cout << product << endl;
+    
   }
 
   outFile->cd();
   hTickdiff->Write();
   hPosdiff->Write();
-  funccumuPosdiff->Write();
   funcPosdiff->Write();
 }
 /*
