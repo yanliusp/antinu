@@ -4,6 +4,7 @@
 #include "coincidence.hh"
 #include "randomize.hh"
 #include "write.hh"
+#include "cumuProb.hh"
 
 #include <sys/stat.h>
 #include <vector>
@@ -54,13 +55,12 @@ int main () {
   event_select("./scan_files/scan.root","scandata", "delayed", delayed_cuts);
 
   //apply coincidence cuts
-  coincidence("./scan_files/scan.root","scandata");
+  //coincidence("./scan_files/scan.root","scandata");
 
-  //randomization && applying cuts
-  //Method: "Moving to the next"
-  //randomize("./candidate_files/candidate.root", "candidate", 0, coincidence_cuts);
+  //randomization && write
+  //write(cuts, coincidence_cuts); //write calls randomize()
 
-  write(cuts, coincidence_cuts);
+  cumuProb("./candidate_files/candidate.root", "candidate", global_cuts);
 
   return 0;
 }
