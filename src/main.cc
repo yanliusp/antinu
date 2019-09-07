@@ -32,7 +32,7 @@ int main () {
   // cuts
   const vector<double> global_cuts = {5300., 0.0, 0.55, -0.12, 0.95}; //FV, u.r, itr, beta14_min, beta14_max
   const vector<double> prompt_cuts={2.5,0.9,1000.}; //energy, nhits_min, nhits_max
-  const vector<double> delayed_cuts={1.5,9.9,20.1}; //energy, nhits_min, nhits_max
+  const vector<double> delayed_cuts={1.0,9.9,100.}; //energy, nhits_min, nhits_max
   const vector<double> coincidence_cuts={15/20.*1000,2000.}; //time [us], position
 
   //convert cuts to a string
