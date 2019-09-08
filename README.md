@@ -20,7 +20,9 @@
 Rather than using cuts -> now using a cumulative prob. calculation (see slides on Sep. 5 for Queen's group meeting). Things still need to be done:
 
 	* test that the method works for other cuts. Specifically, when relieving the nhit maximum cut on delayed events
+	> it does not affect results by relaxing this cut.
 	* fit the distance distribution with more polynomials
+	> Done. Can be well fitted by adding an additional 4th polynomial term and floating other three parameters
 	* change to a likelihood analysis
 
 2019.Aug.16: EVENT SELECTION CRITERIA
