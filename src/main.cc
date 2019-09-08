@@ -25,8 +25,8 @@ int main () {
 
   const string SKIMDIR = "./skim_files/skim_s0.root";
   const string SCANDIR = "./scan_files/scan.root";
-  //const string ntuplepath = "/data/snoplus/processed_data/timebin_5-2/*ntuple.root";
-  const string ntuplepath = "./ntuple_files/*ntuple.root";
+  const string ntuplepath = "root /data/snoplus/production_data/WaterReactorRun_timebin6/*.ntuple.root";
+  //const string ntuplepath = "./ntuple_files/*ntuple.root";
   // number of entries per skim file
   int filesize = 1000000;
 
@@ -48,7 +48,7 @@ int main () {
   if (!exists(SKIMDIR)) skim(ntuplepath, filesize);
 
   //apply global cuts
-  if (!exists(SCANDIR)) scan(global_cuts);
+//  if (!exists(SCANDIR)) scan(global_cuts);
 
   //apply individual cuts
   event_select("./scan_files/scan.root","scandata", "prompt", prompt_cuts);

@@ -14,6 +14,7 @@ void skim(const string &ntuplepath, int filesize) {
   //read ntuple files (data)
   TChain *chain = new TChain("output"); 
   chain->Add(ntuplepath.c_str());
+  cout << "Loaded files: " << ntuplepath.c_str() << endl;
 
   bool fitValid;
   int triggerWord;
@@ -37,8 +38,11 @@ void skim(const string &ntuplepath, int filesize) {
   string filename = "./skim_files/skim_s0.root";
   TFile *writeFile = new TFile(filename.c_str(),"RECREATE");
   chain->LoadTree(0);
+  cout << "DEBUG1" << endl;
   TTree *skim = chain->GetTree()->CloneTree(0);
+  cout << "DEBUG2" << endl;
   skim->Branch("udotr",&udotr,"udotr/D");
+  cout << "DEBUG3" << endl;
 
   int counter = 1;
   cout << "Total number of events to be skimmed: " << chain->GetEntries() << endl;
