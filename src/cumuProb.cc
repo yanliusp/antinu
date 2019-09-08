@@ -14,16 +14,17 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   TTree *candidate = (TTree *)file.Get(treename.c_str());
 
   TFile *outFile = new TFile("test.root", "RECREATE");
-  //fit function for distance distribution
-  //TF1 * cumuPos = new TF1("cumuPos", "(x*x*x/3. - 1.05147*3./4./5500.*x*x*x*x/4. + 1.16275/16./5500./5500./5500.*x*x*x*x*x*x/6.)/5500./5500./5500./0.286866", 0, 10452);
+  TTree *data = new TTree("data", "tree");
 
   //histograms
   TH1D *hPosdiff = new TH1D("hPosdiff", "distance distribution of coincidence candidates", global_cuts[0]/50., 0, 2*global_cuts[0]);
   TH1D *hTickdiff = new TH1D("hTickdiff", "distribution of tick differences", 100, 0, 1000000000); // range=20s
+  TH1D *hProduct = new TH1D("hProduct", "distribution of Log(product)", 120, 0, 1);
 
   candidate->Draw("posdiff_4>>hPosdiff");
   candidate->Draw("tickdiff50_4>>hTickdiff");
 
+  //fit function for distance distribution
   //TF1 *funcPosdiff = new TF1("funcPosdiff", "[1]*(([2]+3)*x*x/TMath::Power([0],3) - ([3]+9./4.)*x*x*x/TMath::Power([0],4) + ([4]+3./16.)*TMath::Power(x,5)/TMath::Power([0],6))", 0, 2*global_cuts[0]); // random points distribution
   TF1 *funcPosdiff = new TF1("funcPosdiff", "[1]*(([2]+3)/TMath::Power([0],3)*x*x - ([3]+9./4.)/TMath::Power([0],4)*x*x*x + ([4]+3./16.)/TMath::Power([0],6)*TMath::Power(x,5) + [5]/TMath::Power([0],5)*TMath::Power(x,4))", 0, 2*global_cuts[0]);
   funcPosdiff->SetParameters(global_cuts[0], hPosdiff->Integral(), 0, 0, 0, 1);
@@ -33,10 +34,9 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
 
   funcPosdiff->SetParameter(1, 1.);
 
+  //fit function for time is "expo"
   hTickdiff->Fit("expo");
   double lambda = hTickdiff->GetFunction("expo")->GetParameter(1);
-
-  //fit function for time is "expo"
 
   double posdiff;
   ULong64_t tickdiff;
@@ -45,13 +45,17 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   candidate->SetBranchAddress("posdiff_4", &posdiff);
   candidate->SetBranchAddress("tickdiff50_4", &tickdiff);
 
+  data->Branch("product", &product, "product/D");
+
   //fit for distance and time
   for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
     candidate->GetEvent(iEv);
 
-    cout << posdiff << " " << funcPosdiff->Integral(0., posdiff) << "   "  << 1 - TMath::Exp(lambda*(double)tickdiff) <<" " << tickdiff/1000*20 << endl;
-    product = funcPosdiff->Integral(0., posdiff) * (1 - TMath::Exp(lambda*(double)tickdiff));
-    cout << product << endl;
+    if (tickdiff<1000000000) { //timediff < 20s
+      product = funcPosdiff->Integral(0., posdiff) * (1 - TMath::Exp(lambda*(double)tickdiff));
+      hProduct->Fill(TMath::Log10(product));
+      data->Fill();
+    }
     
   }
 
@@ -59,6 +63,9 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   hTickdiff->Write();
   hPosdiff->Write();
   funcPosdiff->Write();
+  hProduct->Write();
+  data->Write("",TObject::kOverwrite);
+  outFile->Close();
 }
 /*
 void test() {
