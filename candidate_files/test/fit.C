@@ -64,7 +64,6 @@ void fit() {
 
   TFile * f3 = new TFile("../../test_data.root", "READ");
   TH1D *hData = (TH1D *)f3->Get("hProduct");
-  hData->Draw();
 
   RooRealVar product("product","product",-12,0);
   product.setBins(120);
@@ -77,21 +76,36 @@ void fit() {
   //RooGenericPdf RoopdfBg("", "", product, PoohBg);
   RooHistPdf RoopdfSig("Roopdfsig", "pdf of Signal", product, RoohSig);
 
-  RooRealVar signum("NumSig", "Number of Signals", 1, 0, hData->Integral());
-  RooRealVar bgnum("NumBg", "Number of Backgrounds", hData->Integral()-1, 0, hData->Integral());
+  RooRealVar signum("NumSig", "Ratio of signal/total number of events", 1-1./hData->Integral(), 0, hData->Integral());
+//  RooRealVar signum("NumSig", "Number of Signals", 1-1./hData->Integral(), 0, hData->Integral());
+//  RooRealVar bgnum("NumBg", "Number of Backgrounds", hData->Integral()-1, 0, hData->Integral());
 
-  RooAddPdf model("model","Sig+BG Fit",RooArgList(RoopdfSig,RoopdfBg), RooArgList(signum, bgnum));
+  RooAddPdf model("model","Sig+BG Fit",RooArgList(RoopdfSig,RoopdfBg), RooArgList(signum));
 
   RooFitResult* fitresult = model.fitTo(RoohData, Save(kTRUE), Extended(kTRUE), SumW2Error(kTRUE),Minimizer("Minuit"),Minos(kTRUE),PrintLevel(0),Verbose(kFALSE));
-//  model.fitTo(RoohData);
-  fitresult->Print("v"); 
-  signum.Print();
+//  fitresult->Print("v"); 
+//  signum.Print();
 
+//  cout << " minNll: " << fitresult->minNll() << endl;
+
+  RooAbsReal *nll = model.createNLL(RoohData, NumCPU(2));
+  RooMinimizer(*nll).migrad();
+  
+  RooPlot *ratioplot = signum.frame(Bins(100), Range(0,5e-5));
+  nll->plotOn(ratioplot, ShiftToZero());
+  //nll->plotOn(ratioplot);
+  ratioplot->Draw();
+
+/*
   RooPlot *figure = product.frame();
   RoohData.plotOn(figure);
   model.plotOn(figure);
   model.plotOn(figure, Components(RoopdfSig), LineStyle(kDashed));
-  //figure->Draw();
+  figure->Draw();
+  figure->GetYaxis()->SetRangeUser(1e-2, 1e4);
+  gPad->SetLogy();
+  figure->Draw();
+*/
 }
 
 
