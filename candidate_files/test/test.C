@@ -1,3 +1,5 @@
+//write signal pdf to file: test.root
+
 void test() {
 
   //read time diff and distance from antinuMC
