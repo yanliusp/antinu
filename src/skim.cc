@@ -38,11 +38,8 @@ void skim(const string &ntuplepath, int filesize) {
   string filename = "./skim_files/skim_s0.root";
   TFile *writeFile = new TFile(filename.c_str(),"RECREATE");
   chain->LoadTree(0);
-  cout << "DEBUG1" << endl;
   TTree *skim = chain->GetTree()->CloneTree(0);
-  cout << "DEBUG2" << endl;
   skim->Branch("udotr",&udotr,"udotr/D");
-  cout << "DEBUG3" << endl;
 
   int counter = 1;
   cout << "Total number of events to be skimmed: " << chain->GetEntries() << endl;
@@ -51,8 +48,8 @@ void skim(const string &ntuplepath, int filesize) {
       chain->GetEvent(iEv);
 
       //triggerWord, data-cleaning, fitValid
-      if (!(((triggerWord & 0x401400) == 0x0) && (triggerWord != 0x40))) continue;
-      if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) continue;
+      //if (!(((triggerWord & 0x401400) == 0x0) && (triggerWord != 0x40))) {cout << "DEBUG1" << endl; continue;}
+      //if (((dcApplied & dcClean) & dcFlagged) != (dcApplied & dcClean)) {cout << "DEBUG2" << endl; continue;}
       if (!fitValid) continue;
 
       //calculate u.r
