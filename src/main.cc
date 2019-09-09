@@ -55,7 +55,7 @@ int main () {
   event_select("./scan_files/scan.root","scandata", "delayed", delayed_cuts);
 
   //apply coincidence cuts
-  //coincidence("./scan_files/scan.root","scandata");
+  coincidence("./scan_files/scan.root","scandata");
 
   //randomization && write
   //write(cuts, coincidence_cuts); //write calls randomize()

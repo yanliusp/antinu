@@ -36,7 +36,8 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
 
   //fit function for time is "expo"
   hTickdiff->Fit("expo");
-  double lambda = hTickdiff->GetFunction("expo")->GetParameter(1);
+  TF1 *funcTickdiff = hTickdiff->GetFunction("expo");
+  double lambda = funcTickdiff->GetParameter(1);
 
   double posdiff;
   ULong64_t tickdiff;
@@ -63,59 +64,8 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   hTickdiff->Write();
   hPosdiff->Write();
   funcPosdiff->Write();
+  funcTickdiff->Write("funcTickdiff");
   hProduct->Write();
   data->Write("",TObject::kOverwrite);
   outFile->Close();
 }
-/*
-void test() {
-
-  TFile posfile("test.root", "READ");
-  TH1D * hist = (TH1D*) posfile.Get("hcumu_posdiff_4");
-  hist->SetDirectory(0);
-
-  TFile *f1 = new TFile("../candidate_old.root", "READ");
-  TTree *candidate = (TTree *)f1->Get("candidate");
-
-  TFile *fsave = new TFile("product_loose.root", "RECREATE");
-  TTree product("product", "product");
-
-  TH1D * hpro = new TH1D("hpro", "Ptime*Pdist", 100, 0., 1.);
-
-  TF1 * cumuPos = new TF1("cumuPos", "(x*x*x/3. - 1.05147*3./4./5500.*x*x*x*x/4. + 1.16275/16./5500./5500./5500.*x*x*x*x*x*x/6.)/5500./5500./5500./0.286866", 0, 10452);
-
-  double posdiff;
-  ULong64_t tickdiff;
-  double Pdist, Ptime, Pproduct;
-  //double lambda = 1.282e-9; //with nhit max = 20 for delayed
-  double lambda = 3.341e-09; //without nhit max = 20 for delayed
-
-  product.Branch("Pdist", &Pdist, "Pdist/D");
-  product.Branch("Ptime", &Ptime, "Ptime/D");
-  product.Branch("Pproduct", &Pproduct, "Pproduct/D");
-  product.Branch("posdiff", &posdiff, "posdiff/D");
-  product.Branch("tickdiff", &tickdiff, "tickdiff/l");
-
-  candidate->SetBranchAddress("posdiff_4", &posdiff);
-  candidate->SetBranchAddress("tickdiff50_4", &tickdiff);
-
-  for(int iEv=0; iEv<candidate->GetEntries(); iEv++) {
-    candidate->GetEvent(iEv);
-    //Pdist = hist->GetBinContent(hist->GetXaxis()->FindBin(posdiff)+1);
-    //if (Pdist<0.54 && Pdist>0.48)
-    //cout << Pdist << "   "  << posdiff  << "   " << hist->GetXaxis()->FindBin(posdiff) << "   " << hist->GetBinCenter(hist->GetXaxis()->FindBin(posdiff)) << endl;
-    //write analytical cumulative function for Pdist
-    Pdist = cumuPos->Eval(posdiff);
-    cout << Pdist << "   " << hist->GetBinContent(hist->GetXaxis()->FindBin(posdiff)+1) << "   "<< posdiff << endl;
-    Ptime = 1 - TMath::Exp(-lambda*(double)tickdiff);
-    Pproduct = Pdist * Ptime;
-    hpro->Fill(Pdist);
-    product.Fill();
-  }
-  
-  hpro->Write("");
-  //hpro->Draw();
-  cumuPos->Draw();
-  product.Write();
-}
-*/
