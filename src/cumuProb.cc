@@ -19,7 +19,7 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   //histograms
   TH1D *hPosdiff = new TH1D("hPosdiff", "distance distribution of coincidence candidates", global_cuts[0]/50., 0, 2*global_cuts[0]);
   TH1D *hTickdiff = new TH1D("hTickdiff", "distribution of tick differences", 100, 0, 1000000000); // range=20s
-  TH1D *hProduct = new TH1D("hProduct", "distribution of Log(product)", 120, 0, 1);
+  TH1D *hProduct = new TH1D("hProduct", "distribution of Log(product)", 120, -12, 0);
 
   candidate->Draw("posdiff_4>>hPosdiff");
   candidate->Draw("tickdiff50_4>>hTickdiff");
@@ -32,6 +32,7 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
   funcPosdiff->FixParameter(1, hPosdiff->Integral()*100);
   hPosdiff->Fit("funcPosdiff", "M");
 
+  //normalize
   funcPosdiff->SetParameter(1, 1.);
 
   //fit function for time is "expo"
