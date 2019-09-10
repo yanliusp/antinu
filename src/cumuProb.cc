@@ -26,8 +26,9 @@ void cumuProb(string coincidencefile, string treename, const vector<double> &glo
 
   //fit function for distance distribution
   //TF1 *funcPosdiff = new TF1("funcPosdiff", "[1]*(([2]+3)*x*x/TMath::Power([0],3) - ([3]+9./4.)*x*x*x/TMath::Power([0],4) + ([4]+3./16.)*TMath::Power(x,5)/TMath::Power([0],6))", 0, 2*global_cuts[0]); // random points distribution
-  TF1 *funcPosdiff = new TF1("funcPosdiff", "[1]*(([2]+3)/TMath::Power([0],3)*x*x - ([3]+9./4.)/TMath::Power([0],4)*x*x*x + ([4]+3./16.)/TMath::Power([0],6)*TMath::Power(x,5) + [5]/TMath::Power([0],5)*TMath::Power(x,4))", 0, 2*global_cuts[0]);
-  funcPosdiff->SetParameters(global_cuts[0], hPosdiff->Integral(), 0, 0, 0, 1);
+
+  TF1 *funcPosdiff = new TF1("funcPosdiff", "[1]*(([2]+3)/TMath::Power([0],3)*x*x - ([3]+9./4.)/TMath::Power([0],4)*x*x*x + ([4]+3./16.)/TMath::Power([0],6)*TMath::Power(x,5) + [5]/TMath::Power([0],5)*TMath::Power(x,4) + [6]/TMath::Power([0],7)*TMath::Power(x,6) )", 0, 2*global_cuts[0]);
+  funcPosdiff->SetParameters(global_cuts[0], hPosdiff->Integral(), 0, 0, 0, 1, 1);
   funcPosdiff->FixParameter(0, global_cuts[0]);
   funcPosdiff->FixParameter(1, hPosdiff->Integral()*100);
   hPosdiff->Fit("funcPosdiff", "M");
