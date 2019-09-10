@@ -76,11 +76,11 @@ void fit() {
   //RooGenericPdf RoopdfBg("", "", product, PoohBg);
   RooHistPdf RoopdfSig("Roopdfsig", "pdf of Signal", product, RoohSig);
 
-  RooRealVar signum("NumSig", "Ratio of signal/total number of events", 1-1./hData->Integral(), 0, hData->Integral());
-//  RooRealVar signum("NumSig", "Number of Signals", 1-1./hData->Integral(), 0, hData->Integral());
-//  RooRealVar bgnum("NumBg", "Number of Backgrounds", hData->Integral()-1, 0, hData->Integral());
+//  RooRealVar signum("NumSig", "Ratio of signal/total number of events", 1-1./hData->Integral(), 0, hData->Integral());
+  RooRealVar signum("NumSig", "Number of Signals", 1, 0, 2*hData->Integral());
+  RooRealVar bgnum("NumBg", "Number of Backgrounds", hData->Integral()-1, 0, 2*hData->Integral());
 
-  RooAddPdf model("model","Sig+BG Fit",RooArgList(RoopdfSig,RoopdfBg), RooArgList(signum));
+  RooAddPdf model("model","Sig+BG Fit",RooArgList(RoopdfSig,RoopdfBg), RooArgList(signum,bgnum));
 
   RooFitResult* fitresult = model.fitTo(RoohData, Save(kTRUE), Extended(kTRUE), SumW2Error(kTRUE),Minimizer("Minuit"),Minos(kTRUE),PrintLevel(0),Verbose(kFALSE));
 //  fitresult->Print("v"); 
@@ -91,9 +91,11 @@ void fit() {
   RooAbsReal *nll = model.createNLL(RoohData, NumCPU(2));
   RooMinimizer(*nll).migrad();
   
-  RooPlot *ratioplot = signum.frame(Bins(100), Range(0,5e-5));
+  RooPlot *ratioplot = signum.frame(Bins(100), Range(0,10));
   nll->plotOn(ratioplot, ShiftToZero());
   //nll->plotOn(ratioplot);
+  ratioplot->SetMinimum(0);
+  ratioplot->SetMaximum(10);
   ratioplot->Draw();
 
 /*
