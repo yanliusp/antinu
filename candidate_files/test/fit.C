@@ -63,6 +63,7 @@ void fit() {
   TH1D *hSig = (TH1D *)f2->Get("hProduct_antinu");
 
   TFile * f3 = new TFile("../../test_data.root", "READ");
+  //TFile * f3 = new TFile("../../test_data_loose.root", "READ");
   TH1D *hData = (TH1D *)f3->Get("hProduct");
 
   RooRealVar product("product","product",-12,0);
@@ -93,18 +94,40 @@ void fit() {
 
   RooAbsReal *nll = model.createNLL(RoohData, NumCPU(2));
   RooMinimizer(*nll).migrad();
+  RooMinimizer(*nll).minos();
   
-  RooPlot *ratioplot = signum.frame(Bins(10), Range(0,3));
-  nll->plotOn(ratioplot, ShiftToZero());
-  //nll->plotOn(ratioplot);
+  Double_t range = 20;
+  RooPlot *ratioplot = signum.frame(Bins(100), Range(0,range));
+//  nll->plotOn(ratioplot, ShiftToZero());
 
+  //RooAbsReal *profile = nll->createProfile(signum);
   RooAbsReal *profile = nll->createProfile(signum);
-  profile->plotOn(ratioplot, LineColor(kRed));
+//  cout << " HERE       " << nll->createProfile(signum)->evaluate() << endl;
+  profile->plotOn(ratioplot, LineColor(kRed), RooFit::Name("profile"));
 
   ratioplot->SetMinimum(0);
   ratioplot->SetMaximum(1);
   ratioplot->Draw();
 
+  RooCurve *func = ratioplot->findObject("profile");
+  
+  // ugly loop
+  const Int_t step = 10000;
+  Double_t x[step], y[step];
+  TH1D *hist = new TH1D("hist", "likelihood ratio", step, 0, range);
+  for (int i=0;i<step;i++) {
+    x[i] =  double (i)/double (step) * range;
+    y[i] =  TMath::Exp(-func->Eval(x[i]));
+    hist->SetBinContent(i+1, y[i]);
+  }
+
+  hist->Draw();
+
+  TFile * tesssst = new TFile("tesssss.root", "RECREATE");
+  func->Write();
+  hist->Write();
+//  profile->Write("profile");
+  ratioplot->Write("ratioplot");
 /*
   RooPlot *figure = product.frame();
   RoohData.plotOn(figure);
