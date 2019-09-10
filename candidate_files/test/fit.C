@@ -76,8 +76,11 @@ void fit() {
   //RooGenericPdf RoopdfBg("", "", product, PoohBg);
   RooHistPdf RoopdfSig("Roopdfsig", "pdf of Signal", product, RoohSig);
 
-//  RooRealVar signum("NumSig", "Ratio of signal/total number of events", 1-1./hData->Integral(), 0, hData->Integral());
-  RooRealVar signum("NumSig", "Number of Signals", 1, 0, 2*hData->Integral());
+  RooRealVar signum("NumSig", "Ratio of signal/total number of events", 1-1./hData->Integral(), 0, hData->Integral());
+//  RooRealVar signum("NumSig", "Number of Signals", 4, 4, 4);
+//  signum.setVal(4);
+//  signum.setConstant(kTRUE);
+  //RooRealVar signum("NumSig", "Number of Signals", 1, 0, 2*hData->Integral());
   RooRealVar bgnum("NumBg", "Number of Backgrounds", hData->Integral()-1, 0, 2*hData->Integral());
 
   RooAddPdf model("model","Sig+BG Fit",RooArgList(RoopdfSig,RoopdfBg), RooArgList(signum,bgnum));
@@ -91,23 +94,26 @@ void fit() {
   RooAbsReal *nll = model.createNLL(RoohData, NumCPU(2));
   RooMinimizer(*nll).migrad();
   
-  RooPlot *ratioplot = signum.frame(Bins(100), Range(0,10));
+  RooPlot *ratioplot = signum.frame(Bins(10), Range(0,3));
   nll->plotOn(ratioplot, ShiftToZero());
   //nll->plotOn(ratioplot);
+
+  RooAbsReal *profile = nll->createProfile(signum);
+  profile->plotOn(ratioplot, LineColor(kRed));
+
   ratioplot->SetMinimum(0);
-  ratioplot->SetMaximum(10);
+  ratioplot->SetMaximum(1);
   ratioplot->Draw();
 
 /*
   RooPlot *figure = product.frame();
   RoohData.plotOn(figure);
   model.plotOn(figure);
-  model.plotOn(figure, Components(RoopdfSig), LineStyle(kDashed));
+  model.plotOn(figure, Components(RoopdfSig), LineColor(kRed), LineStyle(kDashed));
+  model.plotOn(figure, Components(RoopdfBg), LineColor(kBlack), LineStyle(kDashed));
   figure->Draw();
   figure->GetYaxis()->SetRangeUser(1e-2, 1e4);
   gPad->SetLogy();
   figure->Draw();
 */
 }
-
-
