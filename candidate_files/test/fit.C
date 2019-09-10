@@ -56,6 +56,7 @@ using namespace RooFit ;
 
 void fit() {
 
+  //TFile *f1 = new TFile("./random_0.9.root", "READ");
   TFile *f1 = new TFile("./random.root", "READ");
   TH1D *hBg = (TH1D *)f1->Get("hProduct");
 
@@ -77,7 +78,7 @@ void fit() {
   //RooGenericPdf RoopdfBg("", "", product, PoohBg);
   RooHistPdf RoopdfSig("Roopdfsig", "pdf of Signal", product, RoohSig);
 
-  RooRealVar signum("NumSig", "Ratio of signal/total number of events", 1-1./hData->Integral(), 0, hData->Integral());
+  RooRealVar signum("NumSig", "Number of signals", 1-1./hData->Integral(), 0, hData->Integral());
 //  RooRealVar signum("NumSig", "Number of Signals", 4, 4, 4);
 //  signum.setVal(4);
 //  signum.setConstant(kTRUE);
@@ -87,8 +88,9 @@ void fit() {
   RooAddPdf model("model","Sig+BG Fit",RooArgList(RoopdfSig,RoopdfBg), RooArgList(signum,bgnum));
 
   RooFitResult* fitresult = model.fitTo(RoohData, Save(kTRUE), Extended(kTRUE), SumW2Error(kTRUE),Minimizer("Minuit"),Minos(kTRUE),PrintLevel(0),Verbose(kFALSE));
-//  fitresult->Print("v"); 
-//  signum.Print();
+  cout << "Pringing out fit results!!!!!!!!!!!!" << endl;
+  fitresult->Print("v"); 
+  signum.Print();
 
 //  cout << " minNll: " << fitresult->minNll() << endl;
 
@@ -96,8 +98,8 @@ void fit() {
   RooMinimizer(*nll).migrad();
   RooMinimizer(*nll).minos();
   
-  Double_t range = 20;
-  RooPlot *ratioplot = signum.frame(Bins(100), Range(0,range));
+  Double_t range = 10;
+  RooPlot *ratioplot = signum.frame(Bins(10), Range(0,range));
 //  nll->plotOn(ratioplot, ShiftToZero());
 
   //RooAbsReal *profile = nll->createProfile(signum);
@@ -106,7 +108,7 @@ void fit() {
   profile->plotOn(ratioplot, LineColor(kRed), RooFit::Name("profile"));
 
   ratioplot->SetMinimum(0);
-  ratioplot->SetMaximum(1);
+  ratioplot->SetMaximum(5);
   ratioplot->Draw();
 
   RooCurve *func = ratioplot->findObject("profile");
@@ -128,15 +130,16 @@ void fit() {
   hist->Write();
 //  profile->Write("profile");
   ratioplot->Write("ratioplot");
-/*
+
   RooPlot *figure = product.frame();
   RoohData.plotOn(figure);
-  model.plotOn(figure);
-  model.plotOn(figure, Components(RoopdfSig), LineColor(kRed), LineStyle(kDashed));
+  model.plotOn(figure, LineColor(kRed));
+  model.plotOn(figure, Components(RoopdfSig), LineColor(kBlue), LineStyle(kDashed));
   model.plotOn(figure, Components(RoopdfBg), LineColor(kBlack), LineStyle(kDashed));
   figure->Draw();
   figure->GetYaxis()->SetRangeUser(1e-2, 1e4);
   gPad->SetLogy();
   figure->Draw();
-*/
+  figure->Write("figure");
+
 }
