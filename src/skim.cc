@@ -40,9 +40,9 @@ void skim(const string &ntuplepath, int filesize) {
   TTree *skim = chain->GetTree()->CloneTree(0);
   skim->Branch("udotr",&udotr,"udotr/D");
 
-  int counter = 1;
+  long int counter = 1;
   cout << "Total number of events to be skimmed: " << chain->GetEntries() << endl;
-  for (int iEv=0; iEv<chain->GetEntries(); iEv++) {
+  for (long int iEv=0; iEv<chain->GetEntries(); iEv++) {
       if (iEv%10000000 == 0) cout << "Processed " << iEv << " event of out " << chain->GetEntries() << flush;
       chain->GetEvent(iEv);
 
