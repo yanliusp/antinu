@@ -24,6 +24,8 @@ Rather than using cuts -> now using a cumulative prob. calculation (see slides o
 	* fit the distance distribution with more polynomials
 	> Done. Can be well fitted by adding an additional 4th polynomial term and floating other three parameters
 	* change to a likelihood analysis
+	> Refer to slides on Sep. 5 for the antinu group.
+	> An extended likelihood analysis is written to calculate the significance.
 
 2019.Aug.16: EVENT SELECTION CRITERIA
 
@@ -121,3 +123,6 @@ More importantly, should start thinking about randomization now.
 	* two inputs: random\_step, and coincidence cuts
 	* output: a root file that contains the number of events passed all cuts (see: ./plots/example\_2019.Aug.16.pdf)
 	* output: this root file can have multiple branches corresponding to different sets of cuts. The first entry will save the result from cuts on the real dataset.
+
+7. cumuProb() diverts from 6, by conducting a cumulative probability calculation (and later on, likelihood analysis).
+	* calculates the cumulative probability of distance and time difference. Calculate the product of the two. Plot the product in Log10 to exaggerate the effect.
