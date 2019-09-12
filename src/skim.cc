@@ -43,7 +43,7 @@ void skim(const string &ntuplepath, int filesize) {
   long int counter = 1;
   cout << "Total number of events to be skimmed: " << chain->GetEntries() << endl;
   for (long int iEv=0; iEv<chain->GetEntries(); iEv++) {
-      if (iEv%10000000 == 0) cout << "Processed " << iEv << " event of out " << chain->GetEntries() << flush;
+      if (iEv%10000000 == 0) cerr << "Processed " << iEv << " events, which is " << double(iEv)/double(chain->GetEntries())*100 << "%" << flush;
       chain->GetEvent(iEv);
 
       //triggerWord, data-cleaning, fitValid
