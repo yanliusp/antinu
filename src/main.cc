@@ -25,7 +25,7 @@ int main () {
 
   const string SKIMDIR = "./skim_files/skim_s0.root";
   const string SCANDIR = "./scan_files/scan.root";
-  const string ntuplepath = "/data/snoplus/processed_data/timebin_3/*ntuple.root";
+  const string ntuplepath = "/data/snoplus/processed_data/timebin_1/*ntuple.root";
   //const string ntuplepath = "./ntuple_files/*ntuple.root";
   // number of entries per skim file
   int filesize = 1000000;

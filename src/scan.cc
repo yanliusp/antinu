@@ -22,6 +22,9 @@ void scan(const vector<double> &global_cuts) {
 
   TChain *chain = new TChain("skimdata"); 
   //chain->Add("./skim_files/skim_s*.root");
+  chain->Add("./skim_files/timebin_1/skim_s*.root");
+  chain->Add("./skim_files/timebin_2/skim_s*.root");
+  chain->Add("./skim_files/timebin_3/skim_s*.root");
   chain->Add("./skim_files/timebin_4/skim_s*.root");
   chain->Add("./skim_files/timebin_5-1/skim_s*.root");
   chain->Add("./skim_files/timebin_5-2/skim_s*.root");
