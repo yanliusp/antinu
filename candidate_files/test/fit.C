@@ -63,7 +63,7 @@ void fit() {
   TFile *f2 = new TFile("./product.root", "READ");
   TH1D *hSig = (TH1D *)f2->Get("hProduct_antinu");
 
-  TFile * f3 = new TFile("../../test_data.root", "READ");
+  TFile * f3 = new TFile("../../test_allND.root", "READ");
   //TFile * f3 = new TFile("../../test_data_loose.root", "READ");
   TH1D *hData = (TH1D *)f3->Get("hProduct");
 

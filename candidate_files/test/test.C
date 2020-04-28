@@ -1,4 +1,4 @@
-//write signal pdf to file: test.root
+//write signal pdf to file: product.root
 
 void test() {
 
@@ -7,7 +7,7 @@ void test() {
   TTree *candidate = (TTree *)f1->Get("candidate");
 
   //read fitted functions from data
-  TFile *f2 = new TFile("../../test_data.root", "READ");
+  TFile *f2 = new TFile("../../test_allND.root", "READ");
   TF1 *funcPosdiff = (TF1 *)f2->Get("funcPosdiff");
   TF1 *funcTickdiff = (TF1 *)f2->Get("funcTickdiff");
 
